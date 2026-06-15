@@ -75,7 +75,13 @@
         .btn-shop { background: var(--cocoa); color: var(--cream); padding: 10px 25px; border-radius: 50px; text-decoration: none; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
 
         @media (max-width: 900px) {
-            .dashboard-wrapper { grid-template-columns: 1fr; gap: 40px; }
+            /* Fix for the navigation on mobile */
+            .nav-container { flex-direction: column; gap: 20px; text-align: center; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; }
+            .logo { font-size: 1.3rem; line-height: 1.4; }
+
+            /* Your existing mobile rules */
+            .dashboard-wrapper { grid-template-columns: 1fr; gap: 40px; margin-top: 30px; }
             .vault-card { flex-direction: column; text-align: center; gap: 30px; }
             .vault-info p { margin-left: auto; margin-right: auto; }
         }
@@ -94,7 +100,6 @@
 
     <div class="dashboard-wrapper">
         
-        <!-- SIDEBAR -->
         <aside class="profile-card" data-aos="fade-up">
             <div class="avatar-circle" id="user-avatar">U</div>
             <h3 class="profile-name" id="user-name">Loading...</h3>
@@ -104,10 +109,8 @@
             </div>
         </aside>
 
-        <!-- MAIN CONTENT PORTAL -->
         <main class="main-portal">
             
-            <!-- EXCLUSIVE COURSE VAULT -->
             <section id="digital-vault-section" style="display: none;" data-aos="fade-up" data-aos-delay="100">
                 <h2 class="section-title"><i class="fa-solid fa-graduation-cap"></i> Your Digital Library</h2>
                 <div class="vault-card">
@@ -119,7 +122,6 @@
                 </div>
             </section>
 
-            <!-- ORDER HISTORY -->
             <section data-aos="fade-up" data-aos-delay="200">
                 <h2 class="section-title"><i class="fa-solid fa-bag-shopping"></i> Order History</h2>
                 <div id="orders-container">
