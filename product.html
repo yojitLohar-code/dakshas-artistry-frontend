@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | Daksha's Artistry</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --cream: #F6F0E8;
+            --beige: #E7D7C9;
+            --mocha: #8B6B61;
+            --cocoa: #4B302A;
+            --champagne: #C6A27A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--cream);
+            color: var(--cocoa);
+            line-height: 1.6;
+        }
+        
+        a { text-decoration: none; color: inherit; }
+
+        /* ─────────────────────────────────────────
+           NAVIGATION & BREADCRUMBS
+        ───────────────────────────────────────── */
+        .top-nav {
+            padding: 20px 5%;
+            border-bottom: 1px solid var(--beige);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600; color: var(--cocoa); }
+        
+        .breadcrumb {
+            padding: 30px 5% 10px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--mocha);
+        }
+        .breadcrumb a { color: var(--cocoa); transition: 0.3s; }
+        .breadcrumb a:hover { color: var(--champagne); }
+
+        /* ─────────────────────────────────────────
+           MAIN LAYOUT
+        ───────────────────────────────────────── */
+        .product-container {
+            display: flex;
+            gap: 60px;
+            padding: 20px 5% 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+            align-items: flex-start;
+        }
+
+        /* ─────────────────────────────────────────
+           IMAGE GALLERY (LEFT SIDE)
+        ───────────────────────────────────────── */
+        .gallery-section {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: sticky;
+            top: 20px;
+        }
+        .main-image {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(75, 48, 42, 0.08);
+        }
+        .main-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            aspect-ratio: 4/5;
+        }
+        .thumbnail-strip { display: flex; gap: 15px; }
+        .thumb {
+            width: 80px; height: 80px; border-radius: 10px;
+            cursor: pointer; border: 2px solid transparent;
+            transition: 0.3s; overflow: hidden;
+        }
+        .thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .thumb.active, .thumb:hover { border-color: var(--champagne); }
+
+        /* ─────────────────────────────────────────
+           PRODUCT INFO (RIGHT SIDE)
+        ───────────────────────────────────────── */
+        .info-section { flex: 1; padding-top: 10px; }
+
+        .category-tag {
+            font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--mocha); margin-bottom: 10px; display: block;
+        }
+
+        h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; line-height: 1.1; margin-bottom: 15px; color: var(--cocoa); }
+
+        .reviews { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; font-size: 0.9rem; cursor: pointer; }
+        .stars { color: var(--champagne); font-size: 1rem; }
+        .reviews span { color: var(--mocha); text-decoration: underline; text-underline-offset: 3px; }
+        .reviews span:hover { color: var(--cocoa); }
+
+        .price-wrap { display: flex; align-items: baseline; gap: 15px; margin-bottom: 30px; }
+        .price { font-size: 1.8rem; font-weight: 500; color: var(--cocoa); }
+        .old-price { font-size: 1.2rem; text-decoration: line-through; color: var(--mocha); }
+
+        .short-description { font-size: 1.05rem; color: var(--mocha); margin-bottom: 40px; line-height: 1.8; }
+
+        /* ─────────────────────────────────────────
+           CHECKOUT ACTIONS
+        ───────────────────────────────────────── */
+        .action-row { display: flex; gap: 15px; margin-bottom: 40px; }
+        
+        .quantity-selector {
+            display: flex; align-items: center; border: 1px solid var(--beige);
+            border-radius: 8px; padding: 5px 15px; background: transparent;
+        }
+        .quantity-selector button { background: none; border: none; font-size: 1.2rem; color: var(--cocoa); cursor: pointer; padding: 10px; }
+        .quantity-selector span { font-weight: 600; min-width: 30px; text-align: center; }
+
+        .add-to-cart-btn {
+            flex: 1; background: var(--cocoa); color: var(--cream); border: none;
+            border-radius: 8px; font-family: inherit; font-size: 0.95rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .add-to-cart-btn:hover { background: var(--mocha); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(139, 107, 97, 0.2); }
+
+        /* ─────────────────────────────────────────
+           TRUST BADGES
+        ───────────────────────────────────────── */
+        .trust-badges {
+            display: flex; justify-content: space-between; padding: 25px 0;
+            border-top: 1px solid var(--beige); border-bottom: 1px solid var(--beige); margin-bottom: 40px;
+        }
+        .badge { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--mocha); text-align: center; }
+        .badge i { font-size: 1.5rem; color: var(--champagne); }
+
+        /* ─────────────────────────────────────────
+           ACCORDIONS (Product Details)
+        ───────────────────────────────────────── */
+        .accordion-item { border-bottom: 1px solid var(--beige); }
+        .accordion-header {
+            width: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0; background: none; border: none; font-family: inherit; font-size: 1rem;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; color: var(--cocoa); cursor: pointer;
+        }
+        .accordion-content {
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out;
+            color: var(--mocha); font-size: 0.95rem; line-height: 1.7;
+        }
+        .accordion-content p, .accordion-content ul { padding-bottom: 20px; }
+        .accordion-header i { transition: transform 0.3s; color: var(--champagne); }
+        .accordion-item.active .accordion-header i { transform: rotate(180deg); }
+        .accordion-item.active .accordion-content { max-height: 800px; }
+
+        .attr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding-bottom: 20px; }
+        .attr-item span { display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--champagne); margin-bottom: 3px; }
+        .attr-item strong { color: var(--cocoa); }
+
+        /* ─────────────────────────────────────────
+           REVIEWS SECTION 
+        ───────────────────────────────────────── */
+        .reviews-section {
+            padding: 60px 5% 100px;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-top: 1px solid var(--beige);
+        }
+        .reviews-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .reviews-header h2 {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            color: var(--cocoa);
+            margin-bottom: 10px;
+        }
+        
+        /* Review Form */
+        .review-form-container {
+            background: #fffdfb;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(198,162,122,0.2);
+            margin-bottom: 40px;
+            display: none; /* Hidden if not logged in */
+        }
+        .star-selector {
+            display: flex;
+            gap: 10px;
+            font-size: 1.5rem;
+            color: var(--beige);
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .star-selector i.active, .star-selector i:hover { color: var(--champagne); }
+        
+        .review-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--beige);
+            border-radius: 8px;
+            font-family: inherit;
+            margin-bottom: 15px;
+            background: transparent;
+            outline: none;
+            resize: vertical;
+        }
+        .review-textarea:focus { border-color: var(--champagne); }
+        
+        .btn-submit-review {
+            background: var(--mocha);
+            color: var(--cream);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-submit-review:hover { background: var(--cocoa); }
+
+        .login-prompt {
+            text-align: center;
+            padding: 20px;
+            background: rgba(198, 162, 122, 0.1);
+            border-radius: 8px;
+            margin-bottom: 40px;
+            color: var(--mocha);
+        }
+        .login-prompt a { color: var(--cocoa); text-decoration: underline; font-weight: 500; }
+
+        /* Review List */
+        .review-list { display: flex; flex-direction: column; gap: 25px; }
+        .review-card {
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(198,162,122,0.15);
+        }
+        .review-card:last-child { border-bottom: none; }
+        .r-stars { color: var(--champagne); font-size: 0.85rem; margin-bottom: 8px; }
+        .r-meta { font-size: 0.8rem; color: var(--mocha); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+        .r-meta strong { color: var(--cocoa); }
+        .r-comment { color: var(--cocoa); font-size: 0.95rem; line-height: 1.6; }
+
+        #loadingState { text-align: center; padding: 150px 20px; font-family: var(--font-heading); font-size: 1.5rem; color: var(--mocha); }
+        .hidden { display: none !important; }
+
+        @media (max-width: 900px) {
+            .product-container { flex-direction: column; gap: 30px; }
+            .gallery-section { position: relative; top: 0; }
+            h1 { font-size: 2.2rem; }
+            .trust-badges { flex-wrap: wrap; justify-content: center; gap: 20px; }
+        }
+
+        /* ─────────────────────────────────────────
+           DRAWER STYLES
+        ───────────────────────────────────────── */
+        .icon-wrapper { position: relative; display: inline-flex; cursor: pointer; }
+        .icon-badge { position: absolute; top: -8px; right: -8px; background: var(--mocha); color: var(--cream); font-size: 0.6rem; font-weight: 600; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0); transition: 0.3s ease; }
+        .icon-badge.visible { opacity: 1; transform: scale(1); }
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(75,48,42,0.4); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .drawer-overlay.open { opacity: 1; pointer-events: all; }
+        .drawer-panel { position: fixed; top: 0; width: 420px; height: 100vh; background: var(--cream); z-index: 201; display: flex; flex-direction: column; transition: transform 0.45s cubic-bezier(0.77,0,0.175,1); box-shadow: 0 0 60px rgba(75,48,42,0.15); }
+        .cart-drawer { right: 0; transform: translateX(100%); }
+        .cart-drawer.open { transform: translateX(0); }
+        .wishlist-drawer { left: 0; transform: translateX(-100%); }
+        .wishlist-drawer.open { transform: translateX(0); }
+        .drawer-header { padding: 35px 30px 25px; border-bottom: 1px solid rgba(198,162,122,0.25); display: flex; align-items: center; justify-content: space-between; }
+        .drawer-header h2 { font-family: var(--font-heading); font-size: 1.8rem; color: var(--cocoa); }
+        .drawer-close { background: none; border: none; font-size: 1.4rem; color: var(--mocha); cursor: pointer; transition: color 0.3s; }
+        .drawer-close:hover { color: var(--cocoa); }
+        .drawer-items { flex: 1; overflow-y: auto; padding: 20px 30px; }
+        .drawer-empty { text-align: center; padding: 60px 20px; color: var(--mocha); }
+        .drawer-empty i { font-size: 2.5rem; margin-bottom: 15px; display: block; opacity: 0.4; }
+        .drawer-empty p { font-size: 0.95rem; }
+        .drawer-item { display: flex; gap: 15px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid rgba(198,162,122,0.15); }
+        .drawer-item-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+        .drawer-item-info { flex: 1; }
+        .drawer-item-info h4 { font-family: var(--font-heading); font-size: 1.05rem; color: var(--cocoa); margin-bottom: 4px; }
+        .drawer-item-info p { font-size: 0.8rem; color: var(--mocha); }
+        .drawer-item-price { font-weight: 600; color: var(--cocoa); margin-top: 6px; font-size: 0.95rem; }
+        .action-row-drawer { display: flex; align-items: center; gap: 15px; margin-top: 8px; }
+        .drawer-item-btn { background: none; border: none; color: var(--mocha); cursor: pointer; font-size: 0.8rem; opacity: 0.7; transition: opacity 0.2s; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;}
+        .drawer-item-btn:hover { opacity: 1; color: var(--cocoa); }
+        .drawer-item-btn.danger:hover { color: #c0392b; }
+        .drawer-footer { padding: 25px 30px 35px; border-top: 1px solid rgba(198,162,122,0.25); }
+        .cart-subtotal { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.88rem; color: var(--mocha); }
+        .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .cart-total span { font-family: var(--font-heading); font-size: 1.3rem; color: var(--cocoa); }
+        .cart-total strong { font-size: 1.4rem; font-weight: 600; }
+        .btn-checkout { width: 100%; padding: 1.1rem; background: var(--mocha); color: var(--cream); border: none; border-radius: 50px; font-family: var(--font-body); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.35s ease; }
+        .btn-checkout:hover { background: var(--cocoa); }
+        .toast { position: fixed; bottom: 30px; right: 30px; background: var(--cocoa); color: var(--cream); padding: 15px 24px; border-radius: 12px; font-size: 0.88rem; letter-spacing: 0.5px; z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; display: flex; align-items: center; gap: 10px; }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast i { color: var(--champagne); font-size: 1rem; }
+        @media (max-width: 550px) { .drawer-panel { width: 100vw; } }
+    </style>
+</head>
+<body>
+
+    <nav class="top-nav">
+        <a href="shop.html" class="logo">Daksha's Artistry</a>
+        <div class="nav-icons" style="display:flex; gap:20px; font-size:1.4rem; color:var(--cocoa); align-items:center;">
+            <div class="icon-wrapper" onclick="openWishlist()">
+                <i class="fa-regular fa-heart"></i>
+                <span class="icon-badge wishlist-counter-badge" style="display:none;">0</span>
+            </div>
+            <span style="opacity:0.4; font-size:1rem;">|</span>
+            <div class="icon-wrapper" onclick="openCart()">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="icon-badge cart-counter-badge" style="display:none;">0</span>
+            </div>
+            <span style="opacity:0.4; font-size:1rem;">|</span>
+            <a href="login.html" id="login-icon-link" style="color:inherit;"><i class="fa-regular fa-user"></i></a>
+            <a href="dashboard.html" id="user-greeting" style="display:none; font-size:0.9rem; font-weight:600; font-family:var(--font-body); color:var(--mocha); margin-left:5px;"></a>
+        </div>
+    </nav>
+
+    <div class="breadcrumb hidden" id="breadcrumb">
+        <a href="shop.html">Shop</a> / <span id="breadCategory" style="color: var(--champagne);">...</span> / <span id="breadName">...</span>
+    </div>
+
+    <div id="loadingState">Curating your selection...</div>
+
+    <div class="product-container hidden" id="productContent">
+        
+        <div class="gallery-section">
+            <div class="main-image">
+                <img id="mainImg" src="" onerror="this.src='images/default.png'" alt="Product Image">
+            </div>
+            <div class="thumbnail-strip">
+                <div class="thumb active" onclick="swapImage(this)"><img class="thumb-img" src="" onerror="this.src='images/default.png'" alt="Thumb 1"></div>
+                <div class="thumb" onclick="swapImage(this)"><img class="thumb-img" src="" onerror="this.src='images/default.png'" alt="Thumb 2"></div>
+                <div class="thumb" onclick="swapImage(this)"><img class="thumb-img" src="" onerror="this.src='images/default.png'" alt="Thumb 3"></div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <span class="category-tag" id="prodCategory">Category</span>
+            <h1 id="prodName">Product Name</h1>
+            
+            <div class="reviews" onclick="document.getElementById('reviewsAnchor').scrollIntoView({behavior: 'smooth'})">
+                <div class="stars" id="prodStarsUI">
+                    </div>
+                <span id="prodRatingText">5.0 (0 Reviews)</span>
+            </div>
+
+            <div class="price-wrap">
+                <span class="price" id="prodPrice">₹0</span>
+                <span class="old-price hidden" id="prodOldPrice">₹0</span>
+            </div>
+
+            <p class="short-description" id="prodDesc">Description goes here.</p>
+
+            <div class="action-row">
+                <div class="quantity-selector">
+                    <button onclick="changeQty(-1)"><i class="fa-solid fa-minus"></i></button>
+                    <span id="qtyCount">1</span>
+                    <button onclick="changeQty(1)"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <button class="add-to-cart-btn" onclick="addToBag()">
+                    <i class="fa-solid fa-bag-shopping"></i> Add to Bag
+                </button>
+            </div>
+
+            <div class="trust-badges">
+                <div class="badge"><i class="fa-solid fa-leaf"></i> <span>Vegan &<br>Cruelty Free</span></div>
+                <div class="badge"><i class="fa-solid fa-gem"></i> <span>Salon<br>Quality</span></div>
+                <div class="badge"><i class="fa-solid fa-clock"></i> <span>Reusable<br>Up to 3x</span></div>
+                <div class="badge"><i class="fa-solid fa-truck-fast"></i> <span>Fast<br>Shipping</span></div>
+            </div>
+
+            <div class="accordion-item active">
+                <button class="accordion-header" onclick="toggleAccordion(this)">
+                    The Details <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <div class="attr-grid">
+                        <div class="attr-item"><span>Finish</span><strong id="attrFinish">Glossy</strong></div>
+                        <div class="attr-item"><span>Shape</span><strong id="attrShape">Almond</strong></div>
+                        <div class="attr-item"><span>Occasion</span><strong id="attrOccasion">Everyday</strong></div>
+                        
+                        <div class="attr-item" style="grid-column: 1 / -1; margin-top: 15px;">
+                            <span>Included in your kit</span>
+                            <strong id="attrIncluded"></strong>
+                        </div>
+
+                        <div class="attr-item hidden" id="perfectForContainer" style="grid-column: 1 / -1; margin-top: 15px;">
+                            <span>Perfect For</span>
+                            <strong id="attrPerfectFor"></strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header" onclick="toggleAccordion(this)">
+                    Application Guide <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <p>1. Gently push back cuticles with the wooden stick.<br>2. Buff the natural nail surface slightly.<br>3. Wipe nails with an alcohol pad to remove oils.<br>4. Apply an even layer of glue and press the nail down firmly for 15 seconds.</p>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header" onclick="toggleAccordion(this)">
+                    Shipping & Returns <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <p>Free express shipping on all orders over ₹2,499. Orders are processed within 24-48 hours. Due to hygiene reasons, we do not accept returns on opened nail sets.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="reviews-section hidden" id="reviewsAnchor">
+        <div class="reviews-header">
+            <h2>Client Testimonials</h2>
+            <p style="color: var(--mocha);">Real experiences from the Daksha's Artistry community.</p>
+        </div>
+
+        <div class="login-prompt" id="reviewLoginPrompt">
+            Want to share your experience? <a href="login.html">Sign in to leave a review</a>
+        </div>
+
+        <div class="review-form-container" id="reviewFormContainer">
+            <h3 style="font-family: var(--font-heading); color: var(--cocoa); margin-bottom: 15px;">Leave a Review</h3>
+            <div class="star-selector" id="interactiveStars">
+                <i class="fa-solid fa-star" data-val="1"></i>
+                <i class="fa-solid fa-star" data-val="2"></i>
+                <i class="fa-solid fa-star" data-val="3"></i>
+                <i class="fa-solid fa-star" data-val="4"></i>
+                <i class="fa-solid fa-star" data-val="5"></i>
+            </div>
+            <textarea id="reviewText" class="review-textarea" rows="4" placeholder="Tell us what you loved about this set..."></textarea>
+            <button class="btn-submit-review" onclick="submitReview()">Submit Review</button>
+        </div>
+
+        <div class="review-list" id="reviewListContainer">
+            </div>
+    </div>
+
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeAllDrawers()"></div>
+
+    <div class="drawer-panel wishlist-drawer" id="wishlistDrawer">
+        <div class="drawer-header">
+            <h2>Your Wishlist</h2>
+            <button class="drawer-close" onclick="closeWishlist()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-items" id="wishlistItems"></div>
+    </div>
+
+    <div class="drawer-panel cart-drawer" id="cartDrawer">
+        <div class="drawer-header">
+            <h2>Your Bag</h2>
+            <button class="drawer-close" onclick="closeCart()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-items" id="cartItems"></div>
+        <div class="drawer-footer" id="cartFooter" style="display:none;">
+            <div class="cart-subtotal"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
+            <div class="cart-subtotal"><span>Shipping</span><span>Free</span></div>
+            <div class="cart-total"><span>Total</span><strong id="cartTotal">₹0</strong></div>
+            <button class="btn-checkout" onclick="window.location.href='checkout.html'">Proceed to Checkout →</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-check-circle"></i>
+        <span id="toastMsg"></span>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+        let currentQty = 1;
+        let selectedRating = 5; // Default for review form
+
+        async function fetchProductData() {
+            if (!productId) {
+                document.getElementById('loadingState').textContent = "No product selected.";
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://dakshas-artistry-backend-production.up.railway.app/api/products/${productId}`);
+                if (!response.ok) throw new Error("Product not found");
+                const product = await response.json();
+                
+                // Unhide the UI
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('breadcrumb').classList.remove('hidden');
+                document.getElementById('productContent').classList.remove('hidden');
+                document.getElementById('reviewsAnchor').classList.remove('hidden');
+
+                // Populate Data
+                document.title = `${product.name} | Daksha's Artistry`;
+                
+                // Breadcrumbs
+                document.getElementById('breadCategory').textContent = product.category;
+                document.getElementById('breadName').textContent = product.name;
+
+                // Main Info
+                document.getElementById('prodCategory').textContent = `${product.category} Collection`;
+                document.getElementById('prodName').textContent = product.name;
+                document.getElementById('prodDesc').textContent = product.description || "A luxury handcrafted press-on set designed to elevate your everyday elegance.";
+                
+                // Real DB Ratings
+                const rScore = parseFloat(product.rating).toFixed(1);
+                const rCount = product.reviews;
+                document.getElementById('prodRatingText').textContent = `${rScore} (${rCount} Reviews)`;
+                document.getElementById('prodStarsUI').innerHTML = generateStaticStars(rScore);
+                
+                // Pricing
+                document.getElementById('prodPrice').textContent = `₹${parseFloat(product.price).toLocaleString('en-IN')}`;
+                if (product.old_price) {
+                    const oldPriceEl = document.getElementById('prodOldPrice');
+                    oldPriceEl.textContent = `₹${parseFloat(product.old_price).toLocaleString('en-IN')}`;
+                    oldPriceEl.classList.remove('hidden');
+                }
+
+                // Images
+                document.getElementById('mainImg').src = product.img;
+                document.querySelectorAll('.thumb-img').forEach(img => img.src = product.img);
+
+                // Attributes
+                document.getElementById('attrFinish').textContent = product.finish;
+                document.getElementById('attrShape').textContent = product.shape;
+                document.getElementById('attrOccasion').textContent = product.occasion;
+
+                // Lists
+                const includedBox = document.getElementById('attrIncluded');
+                const rawIncluded = product.items_included || product.whats_included; 
+                if (rawIncluded) {
+                    includedBox.innerHTML = `<ul style="margin-top: 5px; margin-left: 18px; font-weight: 500; text-transform: none;">${rawIncluded.split('\n').filter(line => line.trim() !== '').map(line => `<li>${line.trim()}</li>`).join('')}</ul>`;
+                } else {
+                    includedBox.innerHTML = "Standard Premium Press-On Set";
+                }
+
+                const perfectContainer = document.getElementById('perfectForContainer');
+                const perfectBox = document.getElementById('attrPerfectFor');
+                if (product.perfect_for) {
+                    perfectContainer.classList.remove('hidden'); 
+                    perfectBox.innerHTML = `<ul style="margin-top: 5px; margin-left: 18px; font-weight: 500; text-transform: none;">${product.perfect_for.split('\n').filter(line => line.trim() !== '').map(line => `<li>${line.trim()}</li>`).join('')}</ul>`;
+                }
+
+                // Render the real reviews from DB
+                renderReviewList(product.reviewList);
+
+            } catch (error) {
+                document.getElementById('loadingState').textContent = "Sorry, this product is currently unavailable.";
+            }
+        }
+
+        // --- Review System Logic ---
+        function generateStaticStars(rating) {
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= Math.floor(rating)) html += '<i class="fa-solid fa-star"></i>';
+                else if (i - rating < 1)     html += '<i class="fa-solid fa-star-half-stroke"></i>';
+                else                         html += '<i class="fa-regular fa-star"></i>';
+            }
+            return html;
+        }
+
+        function renderReviewList(reviews) {
+            const container = document.getElementById('reviewListContainer');
+            if (!reviews || reviews.length === 0) {
+                container.innerHTML = '<p style="color:var(--mocha); text-align:center; padding: 20px;">Be the first to review this product!</p>';
+                return;
+            }
+
+            container.innerHTML = reviews.map(r => `
+                <div class="review-card">
+                    <div class="r-stars">${generateStaticStars(r.rating)}</div>
+                    <div class="r-meta"><strong>${r.user_name}</strong> • ${new Date(r.created_at).toLocaleDateString()}</div>
+                    <div class="r-comment">${r.comment || ''}</div>
+                </div>
+            `).join('');
+        }
+
+        // Interactive Star Selector
+        document.querySelectorAll('#interactiveStars i').forEach(star => {
+            star.addEventListener('click', (e) => {
+                selectedRating = parseInt(e.target.dataset.val);
+                document.querySelectorAll('#interactiveStars i').forEach(s => {
+                    if (parseInt(s.dataset.val) <= selectedRating) {
+                        s.classList.remove('fa-regular');
+                        s.classList.add('fa-solid');
+                        s.style.color = 'var(--champagne)';
+                    } else {
+                        s.classList.remove('fa-solid');
+                        s.classList.add('fa-regular');
+                        s.style.color = 'var(--beige)';
+                    }
+                });
+            });
+        });
+
+        async function submitReview() {
+            const token = localStorage.getItem('customerToken');
+            const comment = document.getElementById('reviewText').value;
+
+            try {
+                const res = await fetch(`https://dakshas-artistry-backend-production.up.railway.app/api/products/${productId}/reviews`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    },
+                    body: JSON.stringify({ rating: selectedRating, comment: comment })
+                });
+
+                if (res.ok) {
+                    if(typeof showGlobalToast === 'function') showGlobalToast("Review published successfully!");
+                    document.getElementById('reviewText').value = '';
+                    fetchProductData(); // Refresh to show new math and comment
+                } else {
+                    if(typeof showGlobalToast === 'function') showGlobalToast("Failed to post review.");
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // Quantity Logic
+        function changeQty(amount) {
+            currentQty += amount;
+            if (currentQty < 1) currentQty = 1;
+            if (currentQty > 10) currentQty = 10;
+            document.getElementById('qtyCount').textContent = currentQty;
+        }
+
+        // Accordion Logic
+        function toggleAccordion(btn) {
+            const item = btn.parentElement;
+            document.querySelectorAll('.accordion-item').forEach(acc => {
+                if(acc !== item) acc.classList.remove('active');
+            });
+            item.classList.toggle('active');
+        }
+
+        function swapImage(thumbDiv) {
+            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+            thumbDiv.classList.add('active');
+            const newSrc = thumbDiv.querySelector('img').src;
+            document.getElementById('mainImg').src = newSrc;
+        }
+
+        function addToBag() {
+            if (typeof window.addToCart === 'function') {
+                window.addToCart(parseInt(productId), currentQty);
+                const btn = document.querySelector('.add-to-cart-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> Added`;
+                btn.style.background = "green";
+                setTimeout(() => { btn.innerHTML = originalText; btn.style.background = "var(--cocoa)"; }, 2000);
+            }
+        }
+
+        function initAuthUI() {
+            const token = localStorage.getItem('customerToken');
+            const customerName = localStorage.getItem('customerName');
+            if (token && customerName) {
+                document.getElementById('login-icon-link').style.display = 'none';
+                const greeting = document.getElementById('user-greeting');
+                greeting.style.display = 'inline-block';
+                greeting.textContent = `Hi, ${customerName}`;
+                
+                // Unhide the review form if logged in
+                document.getElementById('reviewLoginPrompt').style.display = 'none';
+                document.getElementById('reviewFormContainer').style.display = 'block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initAuthUI();
+            fetchProductData();
+        });
+    </script>
+
+    <script src="global.js"></script>
+</body>
+</html>

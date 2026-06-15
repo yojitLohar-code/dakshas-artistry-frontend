@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daksha's Artistry | Luxury Nail Art</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+
+    <style>
+        /* --- Color Palette & Variables --- */
+        :root {
+            --cream: #F6F0E8;
+            --beige: #E7D7C9;
+            --mocha: #8B6B61;
+            --cocoa: #4B302A;
+            --champagne: #C6A27A;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--cream);
+            color: var(--cocoa);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* --- Navbar --- */
+        header {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 96%;
+            max-width: 1400px;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(246, 240, 232, 0.75);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 25px;
+            height: 85px;
+            box-shadow: 0 8px 30px rgba(75, 48, 42, 0.05);
+            transition: all 0.4s ease;
+            opacity: 0;
+            animation: navFade 1s ease forwards;
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .logo-icon { width: 55px; height: 55px; object-fit: contain; }
+        .logo-text {
+            font-family: var(--font-heading);
+            font-size: 1.65rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            color: var(--cocoa);
+            text-transform: uppercase;
+            white-space: nowrap !important;
+            min-width: max-content;
+        }
+
+        nav { flex: 1; display: flex; justify-content: center; padding: 0 15px; }
+        nav ul { list-style: none; display: flex; gap: 2.8rem; margin: 0; align-items: center; white-space: nowrap !important; flex-shrink: 0; }
+        nav a {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 5px;
+            color: var(--cocoa);
+            transition: all 0.35s ease;
+            white-space: nowrap !important;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 1px;
+            bottom: 0; left: 0;
+            background-color: var(--champagne);
+            transition: width 0.3s ease;
+        }
+        nav a:hover { color: var(--mocha); }
+        nav a:hover::after { width: 100%; }
+        nav a.active { color: var(--mocha); }
+        nav a.active::after { width: 100%; }
+
+        .nav-icons {
+            display: flex;
+            gap: 22px;
+            font-size: 1.55rem;
+            align-items: center;
+            flex-shrink: 0;
+            white-space: nowrap !important;
+            color: var(--cocoa);
+        }
+        .nav-icons i { cursor: pointer; transition: 0.3s ease; }
+        .nav-icons a { display: flex; align-items: center; }
+        .nav-icons i:hover { color: var(--mocha); transform: translateY(-2px); }
+        .divider { opacity: 0.4; font-size: 1.1rem; }
+
+        /* Icon Wrappers & Badges */
+        .icon-wrapper { position: relative; display: inline-flex; cursor: pointer; }
+        .icon-badge {
+            position: absolute;
+            top: -8px; right: -8px;
+            background: var(--mocha);
+            color: var(--cream);
+            font-size: 0.6rem;
+            font-weight: 600;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0;
+            transform: scale(0);
+            transition: 0.3s ease;
+        }
+        .icon-badge.visible { opacity: 1; transform: scale(1); }
+
+        /* --- Hero Section --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 0 8%;
+            background-image: url('images/nails.jpg');
+            background-size: cover;
+            background-position: center 30%;
+            background-attachment: fixed;
+        }
+        .hero-overlay {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(246,240,232,0.95) 0%, rgba(231,215,201,0.7) 45%, rgba(246,240,232,0.1) 100%);
+            z-index: 1;
+        }
+        .organic-shape {
+            position: absolute; top: 15%; left: -5%;
+            width: 600px; height: 600px;
+            background: var(--beige); opacity: 0.4;
+            filter: blur(40px);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            z-index: 2;
+            animation: morph 15s ease-in-out infinite;
+        }
+        .sparkle { position: absolute; color: #C6A27A; z-index: 5; animation: floatSparkle 4s ease-in-out infinite; }
+        .sparkle1 { top: 22%; right: 18%; font-size: 28px; }
+        .sparkle2 { bottom: 18%; right: 32%; font-size: 22px; animation-delay: 1s; }
+        .sparkle3 { top: 55%; right: 8%; font-size: 18px; animation-delay: 2s; }
+
+        @keyframes morph {
+            0%, 100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+            50% { border-radius: 60% 40% 30% 70% / 50% 60% 40% 50%; }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(70px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes navFade {
+            0%   { opacity: 0; transform: translateX(-50%) translateY(-40px); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        @keyframes floatSparkle {
+            0%, 100% { transform: translateY(0); opacity: 0.7; }
+            50%       { transform: translateY(-18px); opacity: 1; }
+        }
+
+        .hero-content {
+            position: relative; z-index: 10;
+            max-width: 650px; margin-top: 80px;
+            opacity: 0; animation: fadeUp 1.8s ease forwards;
+        }
+        .hero-heading {
+            font-family: var(--font-heading);
+            font-size: 5rem; line-height: 1.1; font-weight: 400;
+            color: var(--cocoa); margin-bottom: 1.5rem;
+            text-shadow: 2px 4px 15px rgba(246,240,232,0.5);
+        }
+        .hero-heading span { font-style: italic; color: var(--mocha); }
+        .hero-tagline {
+            font-size: 1.1rem; font-weight: 300; letter-spacing: 0.5px;
+            color: var(--cocoa); margin-bottom: 3rem; max-width: 80%;
+            border-left: 2px solid var(--champagne); padding-left: 1.5rem;
+        }
+        .btn-premium {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background-color: var(--mocha); color: var(--cream);
+            font-family: var(--font-body); font-size: 0.9rem;
+            text-transform: uppercase; letter-spacing: 2px;
+            border: none; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 10px 25px rgba(139,107,97,0.3);
+            transition: all 0.4s ease;
+        }
+        .btn-premium:hover {
+            background-color: var(--cocoa);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(75,48,42,0.4);
+        }
+
+        /* --- Intro --- */
+        .intro-section { padding: 130px 8%; background-color: #fffdfb; text-align: center; }
+        .intro-overline {
+            display: flex; align-items: center; justify-content: center;
+            gap: 15px; font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 3px; color: var(--mocha); margin-bottom: 25px;
+        }
+        .intro-overline::before, .intro-overline::after {
+            content: ''; display: block; width: 40px; height: 1px;
+            background-color: var(--champagne);
+        }
+        .intro-heading { font-family: var(--font-heading); font-size: 4rem; color: var(--cocoa); font-weight: 400; margin-bottom: 25px; }
+        .intro-text { max-width: 750px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8; color: var(--cocoa); }
+
+        /* --- Featured & Trending Collections --- */
+        .featured-section { padding: 120px 8%; background: var(--cream); text-align: center; }
+        .trending-section { padding: 120px 8%; background: var(--cream); text-align: center; }
+        .section-title { font-family: var(--font-heading); font-size: 3.2rem; color: var(--cocoa); margin-bottom: 15px; }
+        .section-subtitle { color: var(--mocha); margin-bottom: 70px; letter-spacing: 1px; }
+
+        .product-grid, .trending-grid { display: grid; gap: 35px; }
+        .product-grid { grid-template-columns: repeat(3,1fr); }
+        .trending-grid { grid-template-columns: repeat(4,1fr); margin-bottom: 60px; }
+
+        /* Product Cards */
+        .product-card {
+            background: #fffdfb; border-radius: 20px; overflow: hidden;
+            border: 1px solid rgba(198,162,122,0.12); transition: all 0.4s ease;
+            box-shadow: 0 12px 30px rgba(75,48,42,0.06); cursor: pointer; position: relative; text-align: left;
+        }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 22px 45px rgba(75,48,42,0.12); }
+        
+        .badge {
+            position: absolute; top: 16px; left: 16px; padding: 4px 12px;
+            border-radius: 50px; font-size: 0.7rem; text-transform: uppercase;
+            letter-spacing: 1.5px; font-weight: 600; z-index: 5;
+        }
+        .badge-new    { background: var(--cocoa); color: var(--cream); }
+        .badge-sale   { background: #c0392b;      color: white;        }
+        .badge-best   { background: var(--champagne); color: var(--cocoa); }
+
+        .card-img-wrap { position: relative; overflow: hidden; display: block; color: inherit; }
+        .product-card img { width: 100%; height: 350px; object-fit: cover; display: block; transition: transform 0.6s ease; }
+        .product-grid .product-card img { height: 420px; }
+        .product-card:hover img { transform: scale(1.06); }
+
+        .card-actions {
+            position: absolute; bottom: 0; left: 0; right: 0; padding: 14px;
+            display: flex; gap: 8px; transform: translateY(100%); transition: transform 0.35s ease;
+        }
+        .product-card:hover .card-actions { transform: translateY(0); }
+
+        .btn-quick {
+            flex: 1; padding: 0.7rem; border: none; border-radius: 10px;
+            font-family: var(--font-body); font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 1.5px; cursor: pointer; transition: all 0.3s ease; font-weight: 500;
+        }
+        .btn-add-cart  { background: var(--mocha); color: var(--cream); }
+        .btn-add-cart:hover  { background: var(--cocoa); }
+        
+        .btn-wishlist {
+            width: 40px; flex: none; background: rgba(246,240,232,0.9); color: var(--cocoa);
+            backdrop-filter: blur(6px); border-radius: 10px; font-size: 1rem; border: none;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;
+        }
+        .btn-wishlist:hover, .btn-wishlist.wishlisted { background: var(--mocha); color: var(--cream); }
+
+        .product-info { padding: 22px 22px 24px; text-align: center; }
+        .product-info h3 { font-family: var(--font-heading); font-size: 1.4rem; margin-bottom: 6px; color: var(--cocoa); }
+        .price-row { display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .price { font-size: 1.1rem; font-weight: 600; color: var(--cocoa); letter-spacing: 0.5px; }
+        .price-old { font-size: 0.9rem; color: var(--mocha); text-decoration: line-through; opacity: 0.7; }
+
+        /* --- Services --- */
+        .services-section { padding: 120px 8%; background: #fffdfb; text-align: center; }
+        .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; margin-top: 50px; }
+        .service-card {
+            padding: 25px; border: 1px solid rgba(198,162,122,0.2);
+            border-radius: 20px; transition: all 0.4s ease;
+            background: var(--cream); display: flex; flex-direction: column; align-items: center;
+        }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(75,48,42,0.05); border-color: var(--champagne); }
+        .service-img { width: 100%; height: 240px; object-fit: cover; border-radius: 12px; margin-bottom: 25px; }
+        .service-card h3 { font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 15px; color: var(--cocoa); }
+        .service-card p { font-size: 0.95rem; color: var(--mocha); line-height: 1.7; }
+
+        /* --- Custom Nails --- */
+        .custom-nails-section { display: flex; align-items: center; background: #fffdfb; }
+        .custom-img-container { flex: 1; height: 700px; }
+        .custom-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .custom-content { flex: 1; padding: 8% 10%; }
+        .custom-content h2 { font-family: var(--font-heading); font-size: 3.5rem; color: var(--cocoa); margin-bottom: 20px; line-height: 1.1; }
+        .custom-content p { color: var(--mocha); margin-bottom: 40px; font-size: 1.1rem; line-height: 1.8; }
+
+        /* --- Makeup --- */
+        .makeup-section { padding: 140px 8%; background-color: var(--cocoa); position: relative; }
+        .makeup-wrapper { max-width: 1300px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; position: relative; }
+        .makeup-text-card {
+            background-color: var(--cream); padding: 70px 60px; width: 45%;
+            border-radius: 15px; position: relative; z-index: 10; box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+        .makeup-text-card .section-title { color: var(--cocoa); font-size: 3.5rem; margin-bottom: 10px; text-align: left; line-height: 1.1; }
+        .makeup-text-card .section-subtitle { color: var(--mocha); font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; text-align: left; display: block; }
+        .makeup-text-card p { color: var(--cocoa); font-size: 1.05rem; line-height: 1.8; margin-bottom: 40px; }
+        .makeup-collage { width: 60%; position: relative; display: flex; justify-content: flex-end; margin-left: -10%; z-index: 1; }
+        .makeup-img-main { width: 85%; height: 650px; object-fit: cover; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .makeup-img-secondary { position: absolute; bottom: -50px; left: 5%; width: 45%; height: 380px; object-fit: cover; border-radius: 12px; border: 8px solid var(--cocoa); box-shadow: 0 15px 30px rgba(0,0,0,0.25); }
+
+        /* --- Courses --- */
+        .courses-editorial { display: flex; align-items: center; padding: 100px 8%; background-color: var(--cream); gap: 80px; }
+        .courses-text-side { flex: 1; padding-right: 20px; }
+        .courses-overline { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 3px; color: var(--mocha); margin-bottom: 20px; font-weight: 500; }
+        .courses-text-side h2 { font-family: var(--font-heading); font-size: 3.8rem; color: var(--cocoa); line-height: 1.15; margin-bottom: 25px; font-weight: 400; }
+        .courses-text-side p { font-size: 1.05rem; color: var(--cocoa); line-height: 1.7; margin-bottom: 45px; max-width: 90%; }
+        .btn-outline {
+            display: inline-block; padding: 1rem 2.5rem; background-color: transparent;
+            color: var(--cocoa); font-family: var(--font-body); font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 2px; border: 1px solid var(--cocoa);
+            cursor: pointer; transition: all 0.4s ease;
+        }
+        .btn-outline:hover { background-color: var(--cocoa); color: var(--cream); }
+        .courses-image-side { flex: 1; }
+        .courses-image-side img { width: 100%; height: auto; object-fit: cover; box-shadow: 0 15px 40px rgba(75,48,42,0.08); }
+
+        /* ─────────────────────────────────────────
+           OVERLAYS & DRAWERS (Cart & Wishlist)
+        ───────────────────────────────────────── */
+        .drawer-overlay {
+            position: fixed; inset: 0; background: rgba(75,48,42,0.4);
+            z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+        }
+        .drawer-overlay.open { opacity: 1; pointer-events: all; }
+
+        .drawer-panel {
+            position: fixed; top: 0; width: 420px; height: 100vh;
+            background: var(--cream); z-index: 201;
+            display: flex; flex-direction: column;
+            transition: transform 0.45s cubic-bezier(0.77,0,0.175,1);
+            box-shadow: 0 0 60px rgba(75,48,42,0.15);
+        }
+        
+        .cart-drawer { right: 0; transform: translateX(100%); }
+        .cart-drawer.open { transform: translateX(0); }
+
+        .wishlist-drawer { left: 0; transform: translateX(-100%); }
+        .wishlist-drawer.open { transform: translateX(0); }
+
+        .drawer-header {
+            padding: 35px 30px 25px; border-bottom: 1px solid rgba(198,162,122,0.25);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .drawer-header h2 { font-family: var(--font-heading); font-size: 1.8rem; color: var(--cocoa); }
+        .drawer-close { background: none; border: none; font-size: 1.4rem; color: var(--mocha); cursor: pointer; transition: color 0.3s; }
+        .drawer-close:hover { color: var(--cocoa); }
+
+        .drawer-items { flex: 1; overflow-y: auto; padding: 20px 30px; }
+        .drawer-empty { text-align: center; padding: 60px 20px; color: var(--mocha); }
+        .drawer-empty i { font-size: 2.5rem; margin-bottom: 15px; display: block; opacity: 0.4; }
+        .drawer-empty p { font-size: 0.95rem; }
+
+        .drawer-item {
+            display: flex; gap: 15px; align-items: flex-start;
+            padding: 18px 0; border-bottom: 1px solid rgba(198,162,122,0.15);
+        }
+        .drawer-item-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+        .drawer-item-info { flex: 1; }
+        .drawer-item-info h4 { font-family: var(--font-heading); font-size: 1.05rem; color: var(--cocoa); margin-bottom: 4px; }
+        .drawer-item-info p { font-size: 0.8rem; color: var(--mocha); }
+        .drawer-item-price { font-weight: 600; color: var(--cocoa); margin-top: 6px; font-size: 0.95rem; }
+        
+        .action-row { display: flex; align-items: center; gap: 15px; margin-top: 8px; }
+        .drawer-item-btn { background: none; border: none; color: var(--mocha); cursor: pointer; font-size: 0.8rem; opacity: 0.7; transition: opacity 0.2s; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;}
+        .drawer-item-btn:hover { opacity: 1; color: var(--cocoa); }
+        .drawer-item-btn.danger:hover { color: #c0392b; }
+
+        .drawer-footer { padding: 25px 30px 35px; border-top: 1px solid rgba(198,162,122,0.25); }
+        .cart-subtotal { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.88rem; color: var(--mocha); }
+        .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .cart-total span { font-family: var(--font-heading); font-size: 1.3rem; color: var(--cocoa); }
+        .cart-total strong { font-size: 1.4rem; font-weight: 600; }
+        .btn-checkout {
+            width: 100%; padding: 1.1rem; background: var(--mocha); color: var(--cream);
+            border: none; border-radius: 50px; font-family: var(--font-body); font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.35s ease;
+        }
+        .btn-checkout:hover { background: var(--cocoa); }
+
+        /* ─────────────────────────────────────────
+           TOAST NOTIFICATION
+        ───────────────────────────────────────── */
+        .toast {
+            position: fixed; bottom: 30px; right: 30px; background: var(--cocoa); color: var(--cream);
+            padding: 15px 24px; border-radius: 12px; font-size: 0.88rem; letter-spacing: 0.5px;
+            z-index: 999; transform: translateY(80px); opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast i { color: var(--champagne); font-size: 1rem; }
+
+        /* ─────────────────────────────────────────
+           FOOTER
+        ───────────────────────────────────────── */
+        .footer { background: #4B302A; color: #F6F0E8; padding: 90px 8% 30px; }
+        .footer-container { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+        .footer-brand h2 { font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 20px; }
+        .footer-brand p { color: #E7D7C9; max-width: 420px; line-height: 1.9; }
+        .footer-links, .footer-contact { display: flex; flex-direction: column; }
+        .footer-links h3, .footer-contact h3 { margin-bottom: 25px; font-size: 1.2rem; letter-spacing: 1px; }
+        .footer-links a { margin-bottom: 15px; color: #E7D7C9; transition: 0.3s ease; display: inline-block; }
+        .footer-links a:hover { color: white; transform: translateX(5px); }
+        .footer-contact p { margin-bottom: 15px; color: #E7D7C9; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; text-align: center; color: #E7D7C9; font-size: 0.9rem; letter-spacing: 1px; }
+
+        /* --- ORIGINAL RESPONSIVE (kept exactly, nav hide moved to 1100px block above) --- */
+        @media (max-width: 1100px) {
+            .makeup-wrapper { flex-direction: column; }
+            .makeup-text-card { width: 95%; margin-bottom: -100px; padding: 50px 40px; text-align: center; }
+            .makeup-text-card .section-title, .makeup-text-card .section-subtitle { text-align: center; }
+            .makeup-collage { width: 100%; margin-left: 0; justify-content: center; margin-top: 50px; }
+            .makeup-img-main { width: 90%; height: 500px; }
+            .makeup-img-secondary { left: 0; bottom: -20px; width: 50%; height: 300px; border-width: 6px; }
+        }
+        @media (max-width: 1050px) {
+            header { padding: 0 1.2rem; }
+            .custom-nails-section { flex-direction: column; }
+            .custom-img-container { height: 400px; width: 100%; }
+            .trending-grid { grid-template-columns: repeat(2,1fr); }
+            .services-grid { grid-template-columns: 1fr; }
+            .courses-editorial { flex-direction: column-reverse; padding: 80px 8%; gap: 50px; }
+            .courses-text-side { padding-right: 0; text-align: center; }
+            .courses-text-side p { max-width: 100%; }
+        }
+        @media (max-width: 900px) {
+            .hero-heading { font-size: 3.5rem; }
+            .hero-overlay { background: linear-gradient(180deg, rgba(246,240,232,0.8) 0%, rgba(246,240,232,0.9) 100%); }
+            .product-grid { grid-template-columns: 1fr 1fr; }
+            /* background-attachment: fixed is broken on iOS Safari — disables it */
+            .hero { background-attachment: scroll; }
+        }
+        @media (max-width: 600px) {
+            .product-grid, .trending-grid { grid-template-columns: 1fr; }
+            .drawer-panel { width: 100vw; }
+        }
+
+        /* ═══════════════════════════════════════════
+           MOBILE NAV — hamburger + slide-out menu
+           Only kicks in at ≤1050px (where nav hides)
+        ═══════════════════════════════════════════ */
+
+        /* Hamburger button — hidden on desktop, shown at ≤1100px */
+        .hamburger-btn {
+            display: none;       /* desktop: hidden */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: 42px;
+            height: 42px;
+            min-width: 42px;    /* never shrink */
+            background: none;
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            padding: 4px;
+            border-radius: 10px;
+            transition: background 0.2s;
+            z-index: 110;
+        }
+        .hamburger-btn:hover { background: rgba(75,48,42,0.07); }
+        .hamburger-btn span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--cocoa);
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.77,0,0.175,1);
+            transform-origin: center;
+        }
+        /* Animated X state */
+        .hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Mobile nav drawer — always in DOM, slides off-screen until active */
+        .mobile-nav-drawer {
+            display: flex;           /* always flex so active class just moves it */
+            visibility: hidden;      /* hidden until active — prevents tab focus */
+            position: fixed;
+            top: 0; left: 0;
+            width: min(320px, 85vw);
+            height: 100vh;
+            background: var(--cream);
+            z-index: 300;
+            flex-direction: column;
+            padding: 0;
+            transform: translateX(-100%);
+            transition: transform 0.45s cubic-bezier(0.77,0,0.175,1),
+                        visibility 0s linear 0.45s;
+            box-shadow: 6px 0 40px rgba(75,48,42,0.13);
+            overflow-y: auto;
+        }
+        .mobile-nav-drawer.active {
+            transform: translateX(0);
+            visibility: visible;
+            transition: transform 0.45s cubic-bezier(0.77,0,0.175,1),
+                        visibility 0s linear 0s;
+        }
+
+        /* Mobile nav overlay */
+        .mobile-nav-overlay {
+            display: block;          /* always in flow, opacity controls visibility */
+            position: fixed; inset: 0;
+            background: rgba(75,48,42,0.45);
+            z-index: 299;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .mobile-nav-overlay.active { opacity: 1; pointer-events: all; }
+
+        .mobile-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 24px 20px;
+            border-bottom: 1px solid rgba(198,162,122,0.22);
+        }
+        .mobile-nav-logo {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 500;
+            letter-spacing: 1.2px;
+            color: var(--cocoa);
+            text-transform: uppercase;
+        }
+        .mobile-nav-close {
+            background: none; border: none;
+            font-size: 1.3rem; color: var(--mocha);
+            cursor: pointer; line-height: 1;
+            padding: 4px; border-radius: 8px;
+            transition: color 0.2s, background 0.2s;
+        }
+        .mobile-nav-close:hover { color: var(--cocoa); background: rgba(75,48,42,0.07); }
+
+        .mobile-nav-links {
+            list-style: none;
+            padding: 18px 0;
+            flex: 1;
+        }
+        .mobile-nav-links li a {
+            display: flex;
+            align-items: center;
+            padding: 14px 28px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            color: var(--cocoa);
+            transition: all 0.25s ease;
+            border-left: 2px solid transparent;
+        }
+        .mobile-nav-links li a:hover,
+        .mobile-nav-links li a.active {
+            color: var(--mocha);
+            background: rgba(198,162,122,0.1);
+            border-left-color: var(--champagne);
+            padding-left: 34px;
+        }
+
+        .mobile-nav-footer {
+            padding: 20px 28px 36px;
+            border-top: 1px solid rgba(198,162,122,0.22);
+            font-size: 0.8rem;
+            color: var(--mocha);
+            letter-spacing: 0.5px;
+        }
+        .mobile-nav-footer p { margin-bottom: 6px; }
+
+        /* ── Tablet: gently compress nav before it hides ── */
+        @media (max-width: 1200px) {
+            nav ul { gap: 1.8rem; }
+            nav a { font-size: 0.8rem; letter-spacing: 1px; }
+        }
+
+        /* ── ≤1100px: hide desktop nav, show hamburger ── */
+        @media (max-width: 1100px) {
+            nav { display: none !important; }
+            .hamburger-btn { display: flex; }
+            .nav-icons { gap: 14px; font-size: 1.3rem; }
+            /* Slightly scale down logo text but keep it */
+            .logo-text { font-size: 1.1rem; letter-spacing: 0.6px; }
+            .logo-icon { width: 44px; height: 44px; }
+        }
+
+        /* ── ≤600px: hide logo text entirely — only icon + icons ── */
+        @media (max-width: 600px) {
+            .logo-text { display: none; }
+            .logo-icon { width: 40px; height: 40px; }
+            .logo-container { gap: 0; }
+            header { padding: 0 1.1rem; height: 68px; top: 10px; }
+            /* Icons: comfortably spaced, never squished */
+            .nav-icons { gap: 16px; font-size: 1.3rem; }
+            /* Dividers waste space on small screens, hide them */
+            .nav-icons .divider { display: none; }
+            /* on very small screens drawers go full width */
+            .drawer-panel { width: 100vw; }
+            /* product grid single column */
+            .product-grid, .trending-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── ≤480px: extra small phones ── */
+        @media (max-width: 480px) {
+            header { height: 64px; top: 8px; }
+            .logo-icon { width: 36px; height: 36px; }
+            .nav-icons { gap: 14px; font-size: 1.2rem; }
+            /* Shrink the organic blob so it doesn't blow out the viewport */
+            .organic-shape { width: 260px; height: 260px; left: -10%; }
+
+            /* hero adjustments */
+            .hero-heading { font-size: 2.4rem; }
+            .hero-tagline { font-size: 0.92rem; max-width: 95%; }
+            .btn-premium { padding: 1rem 2rem; font-size: 0.82rem; }
+
+            /* section paddings */
+            .intro-section,
+            .featured-section,
+            .trending-section,
+            .services-section { padding: 80px 5%; }
+            .intro-heading { font-size: 2.2rem; }
+            .section-title { font-size: 2.2rem; }
+            .makeup-section { padding: 80px 5%; }
+            .makeup-text-card { padding: 36px 24px; }
+            .makeup-text-card .section-title { font-size: 2.2rem; }
+            .courses-editorial { padding: 60px 5%; gap: 30px; }
+            .courses-text-side h2 { font-size: 2.4rem; }
+
+            /* card actions always visible on mobile (no hover) */
+            .card-actions { transform: translateY(0) !important; }
+            .product-card img { height: 260px; }
+            .product-grid .product-card img { height: 280px; }
+
+            /* footer */
+            .footer { padding: 60px 5% 24px; }
+            .footer-container { grid-template-columns: 1fr; gap: 36px; }
+            .footer-brand h2 { font-size: 1.8rem; }
+        }
+
+        /* Touch device: always show card actions (no hover) */
+        @media (hover: none) {
+            .card-actions { transform: translateY(0) !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="images/IMG_3984.PNG" width="82" class="logo-icon" alt="Logo">
+            <div class="logo-text" id="logoText">DAKSHA'S ARTISTRY</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="custom-nails.html">Custom Nails</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        
+        <div class="nav-icons">
+            <div class="icon-wrapper" onclick="openWishlist()">
+                <i class="fa-regular fa-heart"></i>
+                <span class="icon-badge wishlist-counter-badge" style="display:none;">0</span>
+            </div>
+            <span class="divider">|</span>
+            <div class="icon-wrapper" onclick="openCart()">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="icon-badge cart-counter-badge" style="display:none;">0</span>
+            </div>
+            <span class="divider">|</span>
+            <a href="login.html" id="login-icon-link" style="color:inherit; display:flex; align-items:center;">
+                <i class="fa-regular fa-user"></i>
+            </a>
+            <a href="dashboard.html" id="user-greeting" style="display:none; color:inherit; align-items:center;"></a>
+            <!-- Hamburger: only visible on mobile via CSS -->
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileNav()"></div>
+
+    <!-- Mobile Nav Drawer -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer" role="dialog" aria-label="Navigation menu">
+        <div class="mobile-nav-header">
+            <span class="mobile-nav-logo">Daksha's Artistry</span>
+            <button class="mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="custom-nails.html">Custom Nails</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="makeup.html">Makeup</a></li>
+        </ul>
+        <div class="mobile-nav-footer">
+            <p>@dakshasartistry</p>
+            <p>Jaipur, Rajasthan</p>
+        </div>
+    </div>
+
+    <main>
+        <section class="hero">
+            <div class="hero-overlay"></div>
+            <div class="organic-shape"></div>
+            <div class="sparkle sparkle1">✦</div>
+            <div class="sparkle sparkle2">✧</div>
+            <div class="sparkle sparkle3">✦</div>
+            <div class="hero-content">
+                <h1 class="hero-heading">Crafting <span>Elegance</span> at your fingertips.</h1>
+                <p class="hero-tagline">Handcrafted, bespoke nail artistry elevating your daily aesthetic. Experience the pinnacle of modern boutique beauty.</p>
+                <a href="shop.html" class="btn-premium">Shop Collection</a>
+            </div>
+        </section>
+
+        <section class="intro-section" data-aos="fade-up">
+            <div class="intro-overline">The Studio</div>
+            <h2 class="intro-heading">Beauty begins in the details.</h2>
+            <p class="intro-text">Daksha's Artistry brings together bespoke press-on nails, bridal makeup, and practical beauty education through a single approach: thoughtful design, refined technique, and personal attention at every step.</p>
+        </section>
+
+        <section class="featured-section" data-aos="fade-up">
+            <h2 class="section-title">Featured Collection</h2>
+            <p class="section-subtitle">Curated luxury press-on sets crafted for timeless elegance.</p>
+            <div class="product-grid" id="featuredGrid">
+                </div>
+        </section>
+
+        <section class="services-section" data-aos="fade-up">
+            <h2 class="section-title">Our Artistry</h2>
+            <p class="section-subtitle">Excellence across every facet of boutique beauty.</p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="images/skill1.jpeg" alt="Luxury Nails" class="service-img">
+                    <h3>Luxury Nails</h3>
+                    <p>Bespoke press-on sets and elite studio services using only premium, cruelty-free gels and embellishments.</p>
+                </div>
+                <div class="service-card">
+                    <img src="images/skill3.png" alt="Bridal Makeup" class="service-img">
+                    <h3>Bridal Makeup</h3>
+                    <p>Flawless, enduring elegance tailored for your special day. Signature looks that enhance your natural beauty.</p>
+                </div>
+                <div class="service-card">
+                    <img src="images/skill2.png" alt="Beauty Academy" class="service-img">
+                    <h3>The Academy</h3>
+                    <p>Master the craft. Professional courses designed to turn passionate beginners into certified beauty experts.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="trending-section" data-aos="fade-up">
+            <h2 class="section-title">Trending Now</h2>
+            <p class="section-subtitle">The season's most coveted designs.</p>
+            <div class="trending-grid" id="trendingGrid">
+                </div>
+            <a href="shop.html" class="btn-premium">Explore All Collections</a>
+        </section>
+
+        <section class="custom-nails-section">
+            <div class="custom-img-container" data-aos="fade-right">
+                <img src="images/custom.png" alt="Custom Nail Art Process">
+            </div>
+            <div class="custom-content" data-aos="fade-left">
+                <h2>Your Vision, Handcrafted.</h2>
+                <p>Cannot find the exact style you are envisioning? We specialize in turning your unique ideas into wearable art. From precise color matching for your wardrobe to intricate, one-of-a-kind hand-painted concepts, our bespoke service ensures your nails are completely exclusive to you.</p>
+                <a href="custom-nails.html" class="btn-premium">Design Your Custom Set</a>
+            </div>
+        </section>
+
+        <section class="makeup-section">
+            <div class="makeup-wrapper">
+                <div class="makeup-text-card" data-aos="fade-up">
+                    <h2 class="section-title">Signature Artistry</h2>
+                    <span class="section-subtitle">Bridal • Editorial • Evening</span>
+                    <p>We believe makeup should elevate, not mask. Whether you are walking down the aisle, attending a high-profile gala, or stepping in front of the camera, our bespoke artistry is tailored entirely to the occasion. We focus on skin-first, enduring techniques that ensure you look radiant, sophisticated, and flawlessly yourself.</p>
+                    <a href="makeup.html" class="btn-premium">Book Your Look</a>
+                </div>
+                <div class="makeup-collage">
+                    <img src="images/b6.PNG" alt="Bridal Makeup" class="makeup-img-main" data-aos="fade-left">
+                    <img src="images/b9.PNG" alt="Evening Glamour" class="makeup-img-secondary" data-aos="fade-up" data-aos-delay="200">
+                </div>
+            </div>
+        </section>
+
+        <section class="courses-editorial">
+            <div class="courses-text-side">
+                <div class="courses-overline">Courses</div>
+                <h2>Learn the art <br> behind the finish.</h2>
+                <p>Practical, artist-led training for students and beauty professionals who want to build technique, confidence and portfolio-ready work.</p>
+                <a href="courses.html" class="btn-outline">View Courses</a>
+            </div>
+            <div class="courses-image-side">
+                <img src="images/skill2.png" alt="Beauty training">
+            </div>
+        </section>
+    </main>
+
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeAllDrawers()"></div>
+
+    <div class="drawer-panel wishlist-drawer" id="wishlistDrawer">
+        <div class="drawer-header">
+            <h2>Your Wishlist</h2>
+            <button class="drawer-close" onclick="closeWishlist()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-items" id="wishlistItems"></div>
+    </div>
+
+    <div class="drawer-panel cart-drawer" id="cartDrawer">
+        <div class="drawer-header">
+            <h2>Your Bag</h2>
+            <button class="drawer-close" onclick="closeCart()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-items" id="cartItems"></div>
+        <div class="drawer-footer" id="cartFooter" style="display:none;">
+            <div class="cart-subtotal"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
+            <div class="cart-subtotal"><span>Shipping</span><span>Free</span></div>
+            <div class="cart-total"><span>Total</span><strong id="cartTotal">₹0</strong></div>
+            <button class="btn-checkout" onclick="window.location.href='checkout.html'">Proceed to Checkout →</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-check-circle"></i>
+        <span id="toastMsg"></span>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h2>Daksha's Artistry</h2>
+                <p>Luxury handcrafted press-on nails designed to elevate your everyday elegance.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="courses.html">Courses</a>
+                <a href="contact.html">Contact</a>
+                <a href="refund-policy.html" style="color: var(--champagne); margin-top: 10px;">Refund & Cancellation Policy</a>
+                <a href="privacy.html" style="color: var(--champagne);">Privacy Policy</a>
+                <a href="terms.html" style="color: var(--champagne);">Terms of Service</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Studio & Contact</h3>
+                <p>Instagram: @dakshasartistry</p>
+                <p>Email: hello@dakshasartistry.com</p>
+                <p>123 Artistry Lane, Vaishali Nagar<br>Jaipur, Rajasthan 302021<br>India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Daksha's Artistry. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script> AOS.init({ duration: 1200, once: true }); </script>
+
+    <script>
+        /* ─── Mobile Nav ─── */
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+
+        function openMobileNav() {
+            hamburgerBtn.classList.add('open');
+            hamburgerBtn.setAttribute('aria-expanded', 'true');
+            mobileNavDrawer.classList.add('active');
+            mobileNavOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileNav() {
+            hamburgerBtn.classList.remove('open');
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+            mobileNavDrawer.classList.remove('active');
+            mobileNavOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        hamburgerBtn.addEventListener('click', function () {
+            if (mobileNavDrawer.classList.contains('active')) {
+                closeMobileNav();
+            } else {
+                openMobileNav();
+            }
+        });
+
+        // Close mobile nav if Escape key pressed
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeMobileNav();
+        });
+    </script>
+
+    <script>
+        const LOCAL_API_URL = 'https://dakshas-artistry-backend-production.up.railway.app/api';
+        let allProducts = [];
+        let homeWishlistIds = [];
+
+        async function initHome() {
+            // Setup Safe User Icon in Navigation
+            const token = localStorage.getItem('customerToken');
+            const customerName = localStorage.getItem('customerName');
+            
+            if (token && customerName) {
+                const loginIcon = document.getElementById('login-icon-link');
+                const greeting = document.getElementById('user-greeting');
+                
+                if (loginIcon) loginIcon.style.display = 'none';
+                if (greeting) {
+                    greeting.style.display = 'flex';
+                    greeting.innerHTML = `<i class="fa-solid fa-user" style="font-size: 1.4rem;"></i>`;
+                }
+            }
+
+            // Fetch live inventory from MySQL backend
+            try {
+                const res = await fetch(`${LOCAL_API_URL}/products`);
+                const liveData = await res.json();
+                
+                // Map snake_case to camelCase
+                allProducts = liveData.map(item => ({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    oldPrice: item.old_price,
+                    badge: item.badge,
+                    img: item.img
+                }));
+            } catch (err) {
+                console.error("Failed to load inventory for home page:", err);
+                return;
+            }
+
+            // Fetch user's wishlist IDs just so we know which hearts to paint red
+            if (token) {
+                try {
+                    const wRes = await fetch(`${LOCAL_API_URL}/wishlist`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if (wRes.ok) {
+                        const wishItems = await wRes.json();
+                        homeWishlistIds = wishItems.map(item => item.id);
+                    }
+                } catch (err) {}
+            }
+
+            renderHomeGrids();
+        }
+
+        function renderHomeGrids() {
+            // Sort the products so the newest (highest ID) are at the top
+            const newestProducts = [...allProducts].sort((a, b) => b.id - a.id);
+
+            // Slice the exact amounts needed for your grids
+            const featuredProducts = newestProducts.slice(0, 3); // Top 3
+            const trendingProducts = newestProducts.slice(3, 7); // Next 4
+
+            // Inject them into the page
+            const featuredGrid = document.getElementById('featuredGrid');
+            if(featuredGrid && featuredProducts.length > 0) {
+                featuredGrid.innerHTML = featuredProducts.map((p, index) => createCardHTML(p, index * 0.1)).join('');
+            }
+
+            const trendingGrid = document.getElementById('trendingGrid');
+            if(trendingGrid && trendingProducts.length > 0) {
+                trendingGrid.innerHTML = trendingProducts.map((p, index) => createCardHTML(p, index * 0.1)).join('');
+            }
+        }
+
+        function createCardHTML(p, delay) {
+            if(!p) return ''; 
+            const wishlisted = homeWishlistIds.includes(p.id);
+            
+            return `
+                <div class="product-card" data-aos="fade-up" data-aos-delay="${delay * 1000}">
+                    ${p.badge ? `<span class="badge badge-${p.badge}">${p.badge === 'new' ? 'New' : p.badge === 'sale' ? 'Sale' : 'Bestseller'}</span>` : ''}
+                    <a href="product.html?id=${p.id}" class="card-img-wrap" style="display:block; color:inherit;">
+                        <img src="${p.img || 'images/default.png'}" onerror="this.src='images/default.png'" alt="${p.name}" loading="lazy">
+                        <div class="card-actions">
+                            <button class="btn-quick btn-add-cart" onclick="handleAddCart(event, ${p.id})">Add to Bag</button>
+                            <button class="btn-wishlist ${wishlisted ? 'wishlisted' : ''}" onclick="handleToggleWishlist(event, ${p.id})" title="Wishlist">
+                                <i class="fa-${wishlisted ? 'solid' : 'regular'} fa-heart"></i>
+                            </button>
+                        </div>
+                    </a>
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <div class="price-row">
+                            <span class="price">₹${parseFloat(p.price).toLocaleString('en-IN')}</span>
+                            ${p.oldPrice ? `<span class="price-old">₹${parseFloat(p.oldPrice).toLocaleString('en-IN')}</span>` : ''}
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        // Event Wrappers: Passes data to global.js but stops events from bubbling
+        function handleAddCart(e, productId) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (typeof addToCart === 'function') {
+                addToCart(productId, 1);
+            }
+        }
+
+        function handleToggleWishlist(e, productId) {
+            e.preventDefault();
+            e.stopPropagation();
+            // Optimistic UI - Instantly toggle heart
+            const btn = e.currentTarget;
+            btn.classList.toggle('wishlisted');
+            const icon = btn.querySelector('i');
+            if (btn.classList.contains('wishlisted')) {
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid');
+            } else {
+                icon.classList.remove('fa-solid');
+                icon.classList.add('fa-regular');
+            }
+
+            if (typeof toggleWishlist === 'function') {
+                toggleWishlist(productId);
+            }
+        }
+
+        /* Drawer toggles for UI */
+        function openCart() { 
+            document.getElementById('cartDrawer').classList.add('open'); 
+            document.getElementById('drawerOverlay').classList.add('open'); 
+        }
+        function closeCart() { 
+            document.getElementById('cartDrawer').classList.remove('open'); 
+            document.getElementById('drawerOverlay').classList.remove('open'); 
+        }
+        function openWishlist() {
+            document.getElementById('wishlistDrawer').classList.add('open'); 
+            document.getElementById('drawerOverlay').classList.add('open');
+        }
+        function closeWishlist() {
+            document.getElementById('wishlistDrawer').classList.remove('open'); 
+            document.getElementById('drawerOverlay').classList.remove('open');
+        }
+        function closeAllDrawers() { closeCart(); closeWishlist(); }
+
+        // Start everything
+        document.addEventListener('DOMContentLoaded', initHome);
+    </script>
+
+    <script src="global.js"></script>
+</body>
+</html>

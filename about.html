@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Daksha's Artistry</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --cream: #F6F0E8;
+            --beige: #E7D7C9;
+            --mocha: #8B6B61;
+            --cocoa: #4B302A;
+            --champagne: #C6A27A;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { overflow-x: hidden; width: 100%; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--cream);
+            color: var(--cocoa);
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ─── NAVBAR ─── */
+        header {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 96%;
+            max-width: 1400px;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(246, 240, 232, 0.75);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 25px;
+            height: 85px;
+            box-shadow: 0 8px 30px rgba(75, 48, 42, 0.05);
+            opacity: 0;
+            transition: all 0.4s ease;
+            animation: navFade 1s ease 0.2s forwards;
+        }
+
+        @keyframes navFade {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-30px); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .logo-icon { width: 55px; height: 55px; object-fit: contain; }
+        .logo-text {
+            font-family: var(--font-heading);
+            font-size: 1.65rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            color: var(--cocoa);
+            text-transform: uppercase;
+            white-space: nowrap !important;
+            min-width: max-content;
+        }
+
+        nav { flex: 1; display: flex; justify-content: center; padding: 0 15px; }
+        nav ul { 
+            list-style: none; 
+            display: flex; 
+            gap: 2.8rem; 
+            margin: 0; 
+            align-items: center; 
+            white-space: nowrap !important; 
+            flex-shrink: 0; 
+        }
+        nav a {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 5px;
+            color: var(--cocoa);
+            transition: all 0.35s ease;
+            white-space: nowrap !important;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 1px;
+            bottom: 0; left: 0;
+            background-color: var(--champagne);
+            transition: width 0.3s ease;
+        }
+        nav a:hover { color: var(--mocha); transform: translateY(-2px); }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+        nav a.active { color: var(--mocha); }
+
+        .nav-icons {
+            display: flex;
+            gap: 22px;
+            font-size: 1.55rem;
+            align-items: center;
+            flex-shrink: 0;
+            white-space: nowrap !important;
+            color: var(--cocoa);
+        }
+        .nav-icons i { cursor: pointer; transition: 0.3s ease; }
+        .nav-icons i:hover { color: var(--mocha); transform: translateY(-2px); }
+        .nav-icons a { display: flex; align-items: center; }
+        .divider { opacity: 0.4; font-size: 1.1rem; }
+
+        /* Icon Wrappers & Badges */
+        .icon-wrapper { position: relative; display: inline-flex; cursor: pointer; }
+        .icon-badge {
+            position: absolute; top: -8px; right: -8px; background: var(--mocha); color: var(--cream);
+            font-size: 0.6rem; font-weight: 600; width: 18px; height: 18px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0); transition: 0.3s ease;
+        }
+        .icon-badge.visible { opacity: 1; transform: scale(1); }
+
+        /* ─────────────────────────────────────────
+           MOBILE NAV COMPONENTS
+        ───────────────────────────────────────── */
+        .hamburger-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            padding: 4px;
+            border-radius: 10px;
+            transition: background 0.2s;
+            z-index: 110;
+        }
+        .hamburger-btn:hover { background: rgba(75,48,42,0.07); }
+        .hamburger-btn span {
+            display: block; width: 22px; height: 2px; background: var(--cocoa);
+            border-radius: 2px; transition: all 0.35s cubic-bezier(0.77,0,0.175,1); transform-origin: center;
+        }
+        .hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        .mobile-nav-drawer {
+            display: flex; visibility: hidden; position: fixed; top: 0; left: 0; width: min(320px, 85vw);
+            height: 100vh; background: var(--cream); z-index: 300; flex-direction: column; padding: 0;
+            transform: translateX(-100%); transition: transform 0.45s cubic-bezier(0.77,0,0.175,1), visibility 0s linear 0.45s;
+            box-shadow: 6px 0 40px rgba(75,48,42,0.13); overflow-y: auto;
+        }
+        .mobile-nav-drawer.active {
+            transform: translateX(0); visibility: visible;
+            transition: transform 0.45s cubic-bezier(0.77,0,0.175,1), visibility 0s linear 0s;
+        }
+
+        .mobile-nav-overlay {
+            display: block; position: fixed; inset: 0; background: rgba(75,48,42,0.45);
+            z-index: 299; opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+        }
+        .mobile-nav-overlay.active { opacity: 1; pointer-events: all; }
+
+        .mobile-nav-header {
+            display: flex; align-items: center; justify-content: space-between; padding: 28px 24px 20px;
+            border-bottom: 1px solid rgba(198,162,122,0.22);
+        }
+        .mobile-nav-logo { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 500; letter-spacing: 1.2px; color: var(--cocoa); text-transform: uppercase; }
+        .mobile-nav-close { background: none; border: none; font-size: 1.3rem; color: var(--mocha); cursor: pointer; line-height: 1; padding: 4px; border-radius: 8px; transition: color 0.2s, background 0.2s; }
+        .mobile-nav-close:hover { color: var(--cocoa); background: rgba(75,48,42,0.07); }
+
+        .mobile-nav-links { list-style: none; padding: 18px 0; flex: 1; }
+        .mobile-nav-links li a { display: flex; align-items: center; padding: 14px 28px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 500; color: var(--cocoa); transition: all 0.25s ease; border-left: 2px solid transparent; }
+        .mobile-nav-links li a:hover, .mobile-nav-links li a.active { color: var(--mocha); background: rgba(198,162,122,0.1); border-left-color: var(--champagne); padding-left: 34px; }
+
+        .mobile-nav-footer { padding: 20px 28px 36px; border-top: 1px solid rgba(198,162,122,0.22); font-size: 0.8rem; color: var(--mocha); letter-spacing: 0.5px; }
+        .mobile-nav-footer p { margin-bottom: 6px; }
+
+        /* ─── HERO BANNER ─── */
+        .about-hero {
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-photo-side {
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-photo-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            transform: scale(1.04);
+            animation: subtleZoom 8s ease-in-out infinite alternate;
+        }
+        @keyframes subtleZoom {
+            from { transform: scale(1.04); }
+            to { transform: scale(1.08); }
+        }
+        .hero-photo-side::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 60%, rgba(246, 240, 232, 0.5) 100%),
+                        linear-gradient(0deg, rgba(75,48,42,0.12) 0%, transparent 40%);
+        }
+
+        .hero-text-side {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 120px 8% 60px 8%;
+            background: var(--cream);
+            position: relative;
+        }
+
+        .hero-text-side::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            border: 1px solid rgba(198,162,122,0.18);
+        }
+        .hero-text-side::after {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 1px solid rgba(198,162,122,0.12);
+        }
+
+        .hero-overline {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 3.5px;
+            color: var(--champagne);
+            margin-bottom: 28px;
+            font-weight: 500;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 0.7s forwards;
+        }
+        .hero-overline::before {
+            content: '';
+            width: 36px;
+            height: 1px;
+            background: var(--champagne);
+        }
+
+        .hero-main-title {
+            font-family: var(--font-heading);
+            font-size: 4.8rem;
+            line-height: 1.05;
+            color: var(--cocoa);
+            font-weight: 400;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 0.9s forwards;
+        }
+        .hero-main-title em {
+            font-style: italic;
+            color: var(--mocha);
+        }
+
+        .hero-divider {
+            width: 60px;
+            height: 1px;
+            background: var(--champagne);
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 1.1s forwards;
+        }
+
+        .hero-intro-text {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: var(--cocoa);
+            max-width: 480px;
+            font-weight: 300;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 1.3s forwards;
+        }
+
+        .hero-signature {
+            font-family: var(--font-heading);
+            font-size: 3.2rem;
+            font-style: italic;
+            color: var(--champagne);
+            margin-top: 40px;
+            line-height: 1;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 1.5s forwards;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── PHILOSOPHY STRIP ─── */
+        .philosophy-strip {
+            background: var(--cocoa);
+            padding: 90px 8%;
+            display: flex;
+            align-items: flex-start;
+            gap: 100px;
+        }
+        .strip-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--champagne);
+            font-weight: 500;
+            padding-top: 6px;
+            white-space: nowrap;
+            min-width: 120px;
+        }
+        .strip-body { flex: 1; }
+        .strip-body h2 {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            color: var(--cream);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 25px;
+        }
+        .strip-body h2 em { font-style: italic; color: var(--champagne); }
+        .strip-body p {
+            font-size: 1rem;
+            color: rgba(246,240,232,0.7);
+            line-height: 1.9;
+            max-width: 680px;
+        }
+
+        /* ─── STATS ROW ─── */
+        .stats-section {
+            background: var(--cream);
+            padding: 80px 8%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 1px solid rgba(198,162,122,0.15);
+            border-bottom: 1px solid rgba(198,162,122,0.15);
+        }
+        .stat-item {
+            text-align: center;
+            padding: 40px 20px;
+            border-right: 1px solid rgba(198,162,122,0.18);
+            position: relative;
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-number {
+            font-family: var(--font-heading);
+            font-size: 4rem;
+            color: var(--cocoa);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        .stat-number span { font-style: italic; color: var(--champagne); }
+        .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2.5px; color: var(--mocha); }
+
+        /* ─── THE PROCESS / PILLARS ─── */
+        .pillars-section { padding: 120px 8%; background: #fffdfb; }
+        .pillars-header {
+            display: flex; align-items: flex-end; justify-content: space-between;
+            margin-bottom: 80px; border-bottom: 1px solid rgba(198,162,122,0.2); padding-bottom: 40px;
+        }
+        .pillars-header-left h2 { font-family: var(--font-heading); font-size: 3.2rem; color: var(--cocoa); font-weight: 400; line-height: 1.1; }
+        .pillars-header-right { font-size: 0.85rem; color: var(--mocha); max-width: 300px; text-align: right; line-height: 1.7; }
+
+        .pillars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+        .pillar-item { padding: 50px 40px; border-right: 1px solid rgba(198,162,122,0.18); position: relative; transition: background 0.4s ease; }
+        .pillar-item:last-child { border-right: none; }
+        .pillar-item:hover { background: var(--cream); }
+        .pillar-number { font-family: var(--font-heading); font-size: 5rem; color: rgba(198,162,122,0.12); font-weight: 600; line-height: 1; margin-bottom: 20px; transition: color 0.4s ease; }
+        .pillar-item:hover .pillar-number { color: rgba(198,162,122,0.25); }
+        .pillar-icon { font-size: 1.4rem; color: var(--champagne); margin-bottom: 18px; }
+        .pillar-item h4 { font-family: var(--font-heading); font-size: 1.6rem; color: var(--cocoa); margin-bottom: 16px; font-weight: 500; }
+        .pillar-item p { font-size: 0.9rem; color: var(--mocha); line-height: 1.8; }
+
+        /* ─── CLOSING QUOTE ─── */
+        .quote-section { padding: 120px 8%; background: var(--cocoa); text-align: center; position: relative; overflow: hidden; }
+        .quote-section::before {
+            content: '"'; font-family: var(--font-heading); font-size: 30rem; color: rgba(246,240,232,0.03);
+            position: absolute; top: -80px; left: 50%; transform: translateX(-50%); line-height: 1; pointer-events: none;
+        }
+        .quote-text {
+            font-family: var(--font-heading); font-size: 2.8rem; font-style: italic; color: var(--cream);
+            max-width: 900px; margin: 0 auto 30px; line-height: 1.4; position: relative; z-index: 1;
+        }
+        .quote-attr { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 3px; color: var(--champagne); position: relative; z-index: 1; }
+
+        /* ─── FOOTER ─── */
+        .footer { background: #3e2720; color: #F6F0E8; padding: 90px 8% 30px; }
+        .footer-container { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+        .footer-brand h2 { font-family: var(--font-heading); font-size: 2.5rem; margin-bottom: 20px; }
+        .footer-brand p { color: #E7D7C9; max-width: 420px; line-height: 1.9; }
+        .footer-links, .footer-contact { display: flex; flex-direction: column; }
+        .footer-links h3, .footer-contact h3 { margin-bottom: 25px; font-size: 1.1rem; letter-spacing: 1px; }
+        .footer-links a { margin-bottom: 15px; color: #E7D7C9; transition: 0.3s ease; }
+        .footer-links a:hover { color: white; transform: translateX(5px); display: inline-block; }
+        .footer-contact p { margin-bottom: 15px; color: #E7D7C9; }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 25px; text-align: center; color: #E7D7C9; font-size: 0.85rem; letter-spacing: 1px; }
+
+        /* ─── SCROLL REVEAL ─── */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.15s; }
+        .reveal-delay-2 { transition-delay: 0.3s; }
+        .reveal-delay-3 { transition-delay: 0.45s; }
+
+        /* ─── GLOBAL DRAWER & BADGE CSS ─── */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(75,48,42,0.4); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .drawer-overlay.open { opacity: 1; pointer-events: all; }
+        .drawer-panel { position: fixed; top: 0; width: 420px; height: 100vh; background: var(--cream); z-index: 201; display: flex; flex-direction: column; transition: transform 0.45s cubic-bezier(0.77,0,0.175,1); box-shadow: 0 0 60px rgba(75,48,42,0.15); }
+        .cart-drawer { right: 0; transform: translateX(100%); }
+        .cart-drawer.open { transform: translateX(0); }
+        .wishlist-drawer { left: 0; transform: translateX(-100%); }
+        .wishlist-drawer.open { transform: translateX(0); }
+        .drawer-header { padding: 35px 30px 25px; border-bottom: 1px solid rgba(198,162,122,0.25); display: flex; align-items: center; justify-content: space-between; }
+        .drawer-header h2 { font-family: var(--font-heading); font-size: 1.8rem; color: var(--cocoa); }
+        .drawer-close { background: none; border: none; font-size: 1.4rem; color: var(--mocha); cursor: pointer; transition: color 0.3s; }
+        .drawer-close:hover { color: var(--cocoa); }
+        .drawer-items { flex: 1; overflow-y: auto; padding: 20px 30px; }
+        .drawer-empty { text-align: center; padding: 60px 20px; color: var(--mocha); }
+        .drawer-empty i { font-size: 2.5rem; margin-bottom: 15px; display: block; opacity: 0.4; }
+        .drawer-empty p { font-size: 0.95rem; }
+        .drawer-item { display: flex; gap: 15px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid rgba(198,162,122,0.15); }
+        .drawer-item-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+        .drawer-item-info { flex: 1; }
+        .drawer-item-info h4 { font-family: var(--font-heading); font-size: 1.05rem; color: var(--cocoa); margin-bottom: 4px; }
+        .drawer-item-info p { font-size: 0.8rem; color: var(--mocha); }
+        .drawer-item-price { font-weight: 600; color: var(--cocoa); margin-top: 6px; font-size: 0.95rem; }
+        .action-row { display: flex; align-items: center; gap: 15px; margin-top: 8px; }
+        .drawer-item-btn { background: none; border: none; color: var(--mocha); cursor: pointer; font-size: 0.8rem; opacity: 0.7; transition: opacity 0.2s; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;}
+        .drawer-item-btn:hover { opacity: 1; color: var(--cocoa); }
+        .drawer-item-btn.danger:hover { color: #c0392b; }
+        .drawer-footer { padding: 25px 30px 35px; border-top: 1px solid rgba(198,162,122,0.25); }
+        .cart-subtotal { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.88rem; color: var(--mocha); }
+        .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .cart-total span { font-family: var(--font-heading); font-size: 1.3rem; color: var(--cocoa); }
+        .cart-total strong { font-size: 1.4rem; font-weight: 600; }
+        .btn-checkout { width: 100%; padding: 1.1rem; background: var(--mocha); color: var(--cream); border: none; border-radius: 50px; font-family: var(--font-body); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.35s ease; }
+        .btn-checkout:hover { background: var(--cocoa); }
+        .toast { position: fixed; bottom: 30px; right: 30px; background: var(--cocoa); color: var(--cream); padding: 15px 24px; border-radius: 12px; font-size: 0.88rem; letter-spacing: 0.5px; z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; display: flex; align-items: center; gap: 10px; }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast i { color: var(--champagne); font-size: 1rem; }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1200px) {
+            nav ul { gap: 1.8rem; }
+            nav a { font-size: 0.8rem; letter-spacing: 1px; }
+        }
+
+    @media (max-width: 1100px) {
+    header { padding: 0 1.2rem; }
+    nav { display: none !important; }
+    .hamburger-btn { display: flex; }
+    .nav-icons { gap: 14px; font-size: 1.3rem; }
+    .logo-text { font-size: 1.1rem; letter-spacing: 0.6px; }
+    .logo-icon { width: 44px; height: 44px; }
+
+    .about-hero { grid-template-columns: 1fr; height: auto; }
+    .hero-photo-side { height: 60vh; }
+    .hero-text-side { padding: 60px 8% 70px; }
+    .hero-main-title { font-size: 3.5rem; }
+
+    /* --- The 2x2 Grid Border Fix --- */
+    .stats-section { grid-template-columns: repeat(2, 1fr); }
+    
+    /* 1. Reset all borders first */
+    .stat-item {
+        border-right: none;
+        border-top: none;
+        border-bottom: none;
+    }
+    
+    /* 2. Add right borders to the left column (Items 1 and 3) */
+    .stat-item:nth-child(1),
+    .stat-item:nth-child(3) { 
+        border-right: 1px solid rgba(198,162,122,0.18); 
+    }
+    
+    /* 3. Add bottom borders to the top row (Items 1 and 2) */
+    .stat-item:nth-child(1),
+    .stat-item:nth-child(2) { 
+        border-bottom: 1px solid rgba(198,162,122,0.18); 
+    }
+
+    .pillars-grid { grid-template-columns: 1fr; }
+    .pillar-item { border-right: none; border-bottom: 1px solid rgba(198,162,122,0.18); }
+    .pillar-item:last-child { border-bottom: none; }
+}
+
+        @media (max-width: 900px) {
+            .hero-main-title { font-size: 2.8rem; }
+            .strip-body h2 { font-size: 2.2rem; }
+            .philosophy-strip { gap: 40px; flex-direction: column; }
+            .pillars-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .pillars-header-right { text-align: left; max-width: 100%; }
+            .quote-text { font-size: 1.9rem; }
+            .footer-container { grid-template-columns: 1fr; gap: 40px; }
+        }
+
+        @media (max-width: 600px) {
+            .logo-text { display: none; }
+            .logo-icon { width: 40px; height: 40px; }
+            .logo-container { gap: 0; }
+            header { padding: 0 1.1rem; height: 68px; top: 10px; }
+            .nav-icons { gap: 16px; font-size: 1.3rem; }
+            .nav-icons .divider { display: none; }
+            .drawer-panel { width: 100vw; }
+        }
+
+        @media (max-width: 480px) {
+            header { height: 64px; top: 8px; }
+            .logo-icon { width: 36px; height: 36px; }
+            .nav-icons { gap: 14px; font-size: 1.2rem; }
+            .footer { padding: 60px 5% 24px; }
+            .footer-brand h2 { font-size: 1.8rem; }
+            .hero-main-title { font-size: 2.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="images/IMG_3984.PNG" alt="Logo" class="logo-icon">
+            <div class="logo-text">DAKSHA'S ARTISTRY</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="custom-nails.html">Custom Nails</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="nav-icons">
+            <div class="icon-wrapper" onclick="openWishlist()">
+                <i class="fa-regular fa-heart"></i>
+                <span class="icon-badge wishlist-counter-badge" style="display:none;">0</span>
+            </div>
+            <span class="divider">|</span>
+            <div class="icon-wrapper" onclick="openCart()">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="icon-badge cart-counter-badge" style="display:none;">0</span>
+            </div>
+            <span class="divider">|</span>
+            <a href="login.html" id="login-icon-link" style="color:inherit; display:flex; align-items:center;">
+                <i class="fa-regular fa-user"></i>
+            </a>
+            <a href="dashboard.html" id="user-greeting" style="display:none; color:inherit; align-items:center;"></a>
+            
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileNav()"></div>
+
+    <div class="mobile-nav-drawer" id="mobileNavDrawer" role="dialog" aria-label="Navigation menu">
+        <div class="mobile-nav-header">
+            <span class="mobile-nav-logo">Daksha's Artistry</span>
+            <button class="mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="custom-nails.html">Custom Nails</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="makeup.html">Makeup</a></li>
+        </ul>
+        <div class="mobile-nav-footer">
+            <p>@dakshasartistry</p>
+            <p>Jaipur, Rajasthan</p>
+        </div>
+    </div>
+
+    <main>
+        <section class="about-hero">
+            <div class="hero-photo-side">
+                <img src="images/about-bg.JPEG" alt="Daksha — Founder & Lead Artist">
+            </div>
+            <div class="hero-text-side">
+                <div class="hero-overline">Meet The Artist</div>
+                <h1 class="hero-main-title">Artistry in<br>every <em>detail.</em></h1>
+                <div class="hero-divider"></div>
+                <p class="hero-intro-text">I'm Daksha — founder, lead artist, and the hands behind every set. What began as a quiet obsession with fine detail has grown into a studio that celebrates beauty as something personal, precise, and lasting.</p>
+                <div class="hero-signature">Daksha</div>
+            </div>
+        </section>
+
+        <section class="philosophy-strip reveal">
+            <div class="strip-label">The Philosophy</div>
+            <div class="strip-body">
+                <h2>Beauty should feel like <em>you.</em></h2>
+                <p>Every client, every occasion, every set is entirely unique. At Daksha's Artistry, design is never generic — it is considered, intentional, and crafted with genuine care for the person wearing it. We don't follow trends blindly; we translate your individual aesthetic into something wearable and extraordinary.</p>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="stat-item reveal">
+                <div class="stat-number">5<span>+</span></div>
+                <div class="stat-label">Years of Experience</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-1">
+                <div class="stat-number">500<span>+</span></div>
+                <div class="stat-label">Sets Crafted</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-2">
+                <div class="stat-number">100<span>%</span></div>
+                <div class="stat-label">Handcrafted & Bespoke</div>
+            </div>
+            <div class="stat-item reveal reveal-delay-3">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Areas of Expertise</div>
+            </div>
+        </section>
+
+        <section class="pillars-section">
+            <div class="pillars-header reveal">
+                <div class="pillars-header-left">
+                    <h2>The Standard<br>We Hold Ourselves To.</h2>
+                </div>
+                <div class="pillars-header-right">
+                    Three principles that shape everything we create — from a single set to a full bridal look.
+                </div>
+            </div>
+            <div class="pillars-grid">
+                <div class="pillar-item reveal">
+                    <div class="pillar-number">01</div>
+                    <div class="pillar-icon"><i class="fa-solid fa-gem"></i></div>
+                    <h4>Premium Materials</h4>
+                    <p>We source only salon-grade gels, high-end embellishments, and rigorously vetted tools. Quality is non-negotiable — because what touches your hands should be nothing short of exceptional.</p>
+                </div>
+                <div class="pillar-item reveal reveal-delay-1">
+                    <div class="pillar-number">02</div>
+                    <div class="pillar-icon"><i class="fa-solid fa-paintbrush"></i></div>
+                    <h4>Handcrafted Precision</h4>
+                    <p>No mass production. No shortcuts. Every nail is individually designed, hand-painted, and inspected. The care invested in each piece is what makes the difference between good and unforgettable.</p>
+                </div>
+                <div class="pillar-item reveal reveal-delay-2">
+                    <div class="pillar-number">03</div>
+                    <div class="pillar-icon"><i class="fa-solid fa-leaf"></i></div>
+                    <h4>Cruelty-Free Always</h4>
+                    <p>Every product we use is strictly vegan and cruelty-free. Beauty should never come at another's expense — this is a commitment we made from day one and will never compromise on.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="quote-section">
+            <p class="quote-text reveal">"Your nails are a canvas. Let them say something worth remembering."</p>
+            <p class="quote-attr reveal reveal-delay-1">— Daksha, Founder</p>
+        </section>
+
+    </main>
+
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeAllDrawers()"></div>
+
+    <div class="drawer-panel wishlist-drawer" id="wishlistDrawer">
+        <div class="drawer-header">
+            <h2>Your Wishlist</h2>
+            <button class="drawer-close" onclick="closeWishlist()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-items" id="wishlistItems"></div>
+    </div>
+
+    <div class="drawer-panel cart-drawer" id="cartDrawer">
+        <div class="drawer-header">
+            <h2>Your Bag</h2>
+            <button class="drawer-close" onclick="closeCart()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-items" id="cartItems"></div>
+        <div class="drawer-footer" id="cartFooter" style="display:none;">
+            <div class="cart-subtotal"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
+            <div class="cart-subtotal"><span>Shipping</span><span>Free</span></div>
+            <div class="cart-total"><span>Total</span><strong id="cartTotal">₹0</strong></div>
+            <button class="btn-checkout">Proceed to Checkout →</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-check-circle"></i>
+        <span id="toastMsg"></span>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h2>Daksha's Artistry</h2>
+                <p>Luxury handcrafted press-on nails designed to elevate your everyday elegance.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="courses.html">Courses</a>
+                <a href="contact.html">Contact</a>
+                <a href="refund-policy.html" style="color: var(--champagne); margin-top: 10px;">Refund & Cancellation Policy</a>
+                <a href="privacy.html" style="color: var(--champagne);">Privacy Policy</a>
+                <a href="terms.html" style="color: var(--champagne);">Terms of Service</a>
+            </div>
+            <div class="footer-contact">
+                <h3>Studio & Contact</h3>
+                <p>Instagram: @dakshasartistry</p>
+                <p>Email: hello@dakshasartistry.com</p>
+                <p>123 Artistry Lane, Vaishali Nagar<br>Jaipur, Rajasthan 302021<br>India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Daksha's Artistry. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        const revealEls = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.12 });
+        revealEls.forEach(el => observer.observe(el));
+
+        /* ─── Mobile Nav Logic ─── */
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+
+        function openMobileNav() {
+            hamburgerBtn.classList.add('open');
+            hamburgerBtn.setAttribute('aria-expanded', 'true');
+            mobileNavDrawer.classList.add('active');
+            mobileNavOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileNav() {
+            hamburgerBtn.classList.remove('open');
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+            mobileNavDrawer.classList.remove('active');
+            mobileNavOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        hamburgerBtn.addEventListener('click', function () {
+            if (mobileNavDrawer.classList.contains('active')) {
+                closeMobileNav();
+            } else {
+                openMobileNav();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeMobileNav();
+        });
+
+
+        // UI toggles for the drawers
+        function openCart() { 
+            document.getElementById('cartDrawer').classList.add('open'); 
+            document.getElementById('drawerOverlay').classList.add('open'); 
+        }
+        function closeCart() { 
+            document.getElementById('cartDrawer').classList.remove('open'); 
+            document.getElementById('drawerOverlay').classList.remove('open'); 
+        }
+        function openWishlist() {
+            document.getElementById('wishlistDrawer').classList.add('open'); 
+            document.getElementById('drawerOverlay').classList.add('open');
+        }
+        function closeWishlist() {
+            document.getElementById('wishlistDrawer').classList.remove('open'); 
+            document.getElementById('drawerOverlay').classList.remove('open');
+        }
+        function closeAllDrawers() { closeCart(); closeWishlist(); }
+
+        // Safe Login Icon Handling
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('customerToken');
+            const customerName = localStorage.getItem('customerName');
+            
+            if (token && customerName) {
+                const loginIcon = document.getElementById('login-icon-link');
+                const greeting = document.getElementById('user-greeting');
+                
+                if (loginIcon) loginIcon.style.display = 'none';
+                if (greeting) {
+                    greeting.style.display = 'flex';
+                    greeting.innerHTML = `<i class="fa-solid fa-user" style="font-size: 1.4rem;"></i>`;
+                }
+            }
+        });
+    </script>
+
+    <script src="global.js"></script>
+</body>
+</html>

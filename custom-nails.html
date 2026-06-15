@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Orders | Daksha's Artistry</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+
+    <style>
+        /* --- Color Palette & Variables --- */
+        :root {
+            --cream: #F6F0E8;
+            --beige: #E7D7C9;
+            --mocha: #8B6B61;
+            --cocoa: #4B302A;
+            --champagne: #C6A27A;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Montserrat', sans-serif;
+        }
+
+        /* --- Global Reset & Base Styles --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background-color: var(--cream); color: var(--cocoa); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- Navbar --- */
+        header {
+            position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: 88%; padding: 0.1rem 3rem;
+            display: flex; justify-content: space-between; align-items: center; z-index: 100;
+            background: rgba(246, 240, 232, 0.75); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 25px; height: 85px; box-shadow: 0 8px 30px rgba(75, 48, 42, 0.05); animation: navFade 1s ease forwards;
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .logo-icon { width: 55px; height: 55px; object-fit: contain; }
+        .logo-text {
+            font-family: var(--font-heading);
+            font-size: 1.65rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            color: var(--cocoa);
+            text-transform: uppercase;
+            white-space: nowrap !important;
+            min-width: max-content;
+        }        
+        nav { flex: 1; display: flex; justify-content: center; padding: 0 20px; }
+        nav ul { 
+            list-style: none; 
+            display: flex; 
+            gap: 2.8rem; 
+            margin: 0; 
+            align-items: center; 
+            white-space: nowrap !important; 
+            flex-shrink: 0; 
+        }       
+        nav a {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 5px;
+            color: var(--cocoa);
+            transition: all 0.35s ease;
+            white-space: nowrap !important;
+        }
+        nav a::after { content: ''; position: absolute; width: 0; height: 1px; bottom: 0; left: 0; background-color: var(--champagne); transition: 0.3s ease; }
+        nav a:hover { color: var(--mocha); }
+        nav a:hover::after { width: 100%; }
+        nav a.active { color: var(--mocha); }
+        nav a.active::after { width: 100%; }
+
+        .nav-icons {
+            display: flex;
+            gap: 22px;
+            font-size: 1.55rem;
+            align-items: center;
+            flex-shrink: 0;
+            white-space: nowrap !important;
+            color: var(--cocoa);
+        }
+        .nav-icons i { cursor: pointer; transition: 0.3s ease; }
+        .nav-icons i:hover { color: var(--mocha); transform: translateY(-2px); }
+        .divider { opacity: 0.4; font-size: 1rem; }
+        #user-greeting { white-space: nowrap !important; }
+
+        @keyframes navFade {
+            0%{ opacity:0; transform:translateX(-50%) translateY(-20px); }
+            100%{ opacity:1; transform:translateX(-50%) translateY(0); }
+        }
+
+        /* ─── GLOBAL DRAWER & BADGE CSS ─── */
+        .icon-wrapper { position: relative; display: inline-flex; cursor: pointer; }
+        .icon-badge { position: absolute; top: -8px; right: -8px; background: var(--mocha); color: var(--cream); font-size: 0.6rem; font-weight: 600; width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0); transition: 0.3s ease; }
+        .icon-badge.visible { opacity: 1; transform: scale(1); }
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(75,48,42,0.4); z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .drawer-overlay.open { opacity: 1; pointer-events: all; }
+        .drawer-panel { position: fixed; top: 0; width: 420px; height: 100vh; background: var(--cream); z-index: 201; display: flex; flex-direction: column; transition: transform 0.45s cubic-bezier(0.77,0,0.175,1); box-shadow: 0 0 60px rgba(75,48,42,0.15); }
+        .cart-drawer { right: 0; transform: translateX(100%); }
+        .cart-drawer.open { transform: translateX(0); }
+        .wishlist-drawer { left: 0; transform: translateX(-100%); }
+        .wishlist-drawer.open { transform: translateX(0); }
+        .drawer-header { padding: 35px 30px 25px; border-bottom: 1px solid rgba(198,162,122,0.25); display: flex; align-items: center; justify-content: space-between; }
+        .drawer-header h2 { font-family: var(--font-heading); font-size: 1.8rem; color: var(--cocoa); }
+        .drawer-close { background: none; border: none; font-size: 1.4rem; color: var(--mocha); cursor: pointer; transition: color 0.3s; }
+        .drawer-close:hover { color: var(--cocoa); }
+        .drawer-items { flex: 1; overflow-y: auto; padding: 20px 30px; }
+        .drawer-empty { text-align: center; padding: 60px 20px; color: var(--mocha); }
+        .drawer-empty i { font-size: 2.5rem; margin-bottom: 15px; display: block; opacity: 0.4; }
+        .drawer-empty p { font-size: 0.95rem; }
+        .drawer-item { display: flex; gap: 15px; align-items: flex-start; padding: 18px 0; border-bottom: 1px solid rgba(198,162,122,0.15); }
+        .drawer-item-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+        .drawer-item-info { flex: 1; }
+        .drawer-item-info h4 { font-family: var(--font-heading); font-size: 1.05rem; color: var(--cocoa); margin-bottom: 4px; }
+        .drawer-item-info p { font-size: 0.8rem; color: var(--mocha); }
+        .drawer-item-price { font-weight: 600; color: var(--cocoa); margin-top: 6px; font-size: 0.95rem; }
+        .action-row-drawer { display: flex; align-items: center; gap: 15px; margin-top: 8px; }
+        .drawer-item-btn { background: none; border: none; color: var(--mocha); cursor: pointer; font-size: 0.8rem; opacity: 0.7; transition: opacity 0.2s; font-family: var(--font-body); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;}
+        .drawer-item-btn:hover { opacity: 1; color: var(--cocoa); }
+        .drawer-item-btn.danger:hover { color: #c0392b; }
+        .drawer-footer { padding: 25px 30px 35px; border-top: 1px solid rgba(198,162,122,0.25); }
+        .cart-subtotal { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.88rem; color: var(--mocha); }
+        .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .cart-total span { font-family: var(--font-heading); font-size: 1.3rem; color: var(--cocoa); }
+        .cart-total strong { font-size: 1.4rem; font-weight: 600; }
+        .btn-checkout { width: 100%; padding: 1.1rem; background: var(--mocha); color: var(--cream); border: none; border-radius: 50px; font-family: var(--font-body); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.35s ease; }
+        .btn-checkout:hover { background: var(--cocoa); }
+        .toast { position: fixed; bottom: 30px; right: 30px; background: var(--cocoa); color: var(--cream); padding: 15px 24px; border-radius: 12px; font-size: 0.88rem; letter-spacing: 0.5px; z-index: 999; transform: translateY(80px); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; display: flex; align-items: center; gap: 10px; }
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast i { color: var(--champagne); font-size: 1rem; }
+
+        /* --- SPLIT SCREEN EDITORIAL LAYOUT --- */
+        .order-layout { display: flex; min-height: 100vh; padding-top: 120px; max-width: 1600px; margin: 0 auto; }
+
+        .visual-panel { width: 45%; padding: 40px; position: sticky; top: 120px; height: calc(100vh - 140px); display: flex; flex-direction: column; justify-content: flex-end; }
+        .visual-image-wrapper { position: absolute; top: 40px; left: 40px; right: 40px; bottom: 40px; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(75, 48, 42, 0.15); }
+        .visual-image-wrapper img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.85); }
+        .visual-overlay-content { position: relative; z-index: 10; padding: 40px; color: white; }
+        .visual-logo { width: 100px; margin-bottom: 20px; filter: brightness(0) invert(1); }
+        .visual-title { font-family: var(--font-heading); font-size: 3.5rem; line-height: 1.1; margin-bottom: 15px; text-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+
+        .coin-method-card { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); padding: 20px; border-radius: 12px; margin-top: 20px; max-width: 350px; }
+        .coin-method-card h4 { font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: 5px; }
+        .coin-method-card p { font-size: 0.85rem; opacity: 0.9; line-height: 1.5; }
+
+        /* Right Side: The Form */
+        .form-panel { width: 55%; padding: 40px 8% 100px 6%; }
+        .form-section-title { font-family: var(--font-heading); font-size: 2.2rem; color: var(--cocoa); margin-bottom: 40px; padding-bottom: 15px; border-bottom: 1px solid var(--champagne); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+        .form-group.full-width { grid-column: span 2; }
+        .form-label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; color: var(--mocha); font-weight: 500; }
+        
+        .form-control { width: 100%; padding: 12px 0; background: transparent; border: none; border-bottom: 1px solid rgba(139, 107, 97, 0.4); font-family: var(--font-body); font-size: 1rem; color: var(--cocoa); transition: all 0.3s ease; }
+        .form-control:focus { outline: none; border-bottom-color: var(--cocoa); }
+        
+        select.form-control { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234B302A' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 5px center; background-size: 15px; padding-right: 30px; }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        /* --- PREMIUM FILE UPLOAD STYLING --- */
+        .file-upload-wrapper { position: relative; width: 100%; }
+        .file-input { display: none; } 
+        .file-label { 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            width: 100%; padding: 30px 20px; border: 1px dashed var(--mocha); border-radius: 12px; 
+            background: rgba(246, 240, 232, 0.5); cursor: pointer; transition: all 0.3s ease; text-align: center;
+        }
+        .file-label:hover { background: var(--beige); border-color: var(--cocoa); }
+        .file-label i { font-size: 2rem; color: var(--mocha); margin-bottom: 10px; }
+        .file-label span { font-size: 0.85rem; color: var(--cocoa); font-weight: 500; text-transform: uppercase; letter-spacing: 1px;}
+        
+        .file-label.success { border: 1px solid #4CAF50; background: rgba(76, 175, 80, 0.1); }
+        .file-label.success i, .file-label.success span { color: #2e7d32; }
+
+        /* --- MODAL STYLES --- */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(75, 48, 42, 0.85); backdrop-filter: blur(8px); }
+        .modal-content { background-color: var(--cream); margin: 5% auto; padding: 25px; border-radius: 15px; width: 90%; max-width: 600px; position: relative; animation: modalFade 0.4s ease; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .close-modal { position: absolute; top: 10px; right: 20px; color: var(--cocoa); font-size: 35px; font-weight: 300; cursor: pointer; transition: 0.3s; }
+        .close-modal:hover { color: var(--mocha); }
+        .modal-img { width: 100%; height: auto; border-radius: 8px; border: 1px solid rgba(198, 162, 122, 0.3); }
+        @keyframes modalFade { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Terms Section */
+        .terms-box { background: #fffdfb; padding: 30px; border-radius: 12px; border: 1px solid rgba(198, 162, 122, 0.2); margin-top: 50px; margin-bottom: 40px; }
+        .terms-box h4 { font-family: var(--font-heading); margin-bottom: 15px; font-size: 1.3rem; }
+        .terms-list { list-style: none; }
+        .terms-list li { position: relative; padding-left: 25px; margin-bottom: 10px; font-size: 0.9rem; color: var(--mocha); }
+        .terms-list li::before { content: '✦'; position: absolute; left: 0; color: var(--champagne); }
+
+        /* Submit Button */
+        .btn-submit { display: inline-block; width: 100%; padding: 1.2rem; background-color: var(--cocoa); color: var(--cream); font-family: var(--font-body); font-size: 1rem; text-transform: uppercase; letter-spacing: 3px; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 25px rgba(75, 48, 42, 0.2); transition: all 0.4s ease; }
+        .btn-submit:hover { background-color: var(--mocha); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(75, 48, 42, 0.3); }
+
+        /* ═══════════════════════════════════════════
+           HAMBURGER BUTTON
+        ═══════════════════════════════════════════ */
+        .hamburger-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            padding: 4px;
+            border-radius: 10px;
+            transition: background 0.2s;
+            z-index: 110;
+        }
+        .hamburger-btn:hover { background: rgba(75,48,42,0.07); }
+        .hamburger-btn span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--cocoa);
+            border-radius: 2px;
+            transition: all 0.35s cubic-bezier(0.77,0,0.175,1);
+            transform-origin: center;
+        }
+        .hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* ═══════════════════════════════════════════
+           MOBILE NAV DRAWER
+        ═══════════════════════════════════════════ */
+        .mobile-nav-drawer {
+            display: flex;
+            visibility: hidden;
+            position: fixed;
+            top: 0; left: 0;
+            width: min(320px, 85vw);
+            height: 100vh;
+            background: var(--cream);
+            z-index: 300;
+            flex-direction: column;
+            padding: 0;
+            transform: translateX(-100%);
+            transition: transform 0.45s cubic-bezier(0.77,0,0.175,1),
+                        visibility 0s linear 0.45s;
+            box-shadow: 6px 0 40px rgba(75,48,42,0.13);
+            overflow-y: auto;
+        }
+        .mobile-nav-drawer.active {
+            transform: translateX(0);
+            visibility: visible;
+            transition: transform 0.45s cubic-bezier(0.77,0,0.175,1),
+                        visibility 0s linear 0s;
+        }
+
+        .mobile-nav-overlay {
+            display: block;
+            position: fixed; inset: 0;
+            background: rgba(75,48,42,0.45);
+            z-index: 299;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .mobile-nav-overlay.active { opacity: 1; pointer-events: all; }
+
+        .mobile-nav-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 28px 24px 20px;
+            border-bottom: 1px solid rgba(198,162,122,0.22);
+        }
+        .mobile-nav-logo {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 500;
+            letter-spacing: 1.2px;
+            color: var(--cocoa);
+            text-transform: uppercase;
+        }
+        .mobile-nav-close {
+            background: none; border: none;
+            font-size: 1.3rem; color: var(--mocha);
+            cursor: pointer; line-height: 1;
+            padding: 4px; border-radius: 8px;
+            transition: color 0.2s, background 0.2s;
+        }
+        .mobile-nav-close:hover { color: var(--cocoa); background: rgba(75,48,42,0.07); }
+
+        .mobile-nav-links {
+            list-style: none;
+            padding: 18px 0;
+            flex: 1;
+        }
+        .mobile-nav-links li a {
+            display: flex;
+            align-items: center;
+            padding: 14px 28px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+            color: var(--cocoa);
+            transition: all 0.25s ease;
+            border-left: 2px solid transparent;
+        }
+        .mobile-nav-links li a:hover,
+        .mobile-nav-links li a.active {
+            color: var(--mocha);
+            background: rgba(198,162,122,0.1);
+            border-left-color: var(--champagne);
+            padding-left: 34px;
+        }
+
+        .mobile-nav-footer {
+            padding: 20px 28px 36px;
+            border-top: 1px solid rgba(198,162,122,0.22);
+            font-size: 0.8rem;
+            color: var(--mocha);
+            letter-spacing: 0.5px;
+        }
+        .mobile-nav-footer p { margin-bottom: 6px; }
+
+        /* ═══════════════════════════════════════════
+           RESPONSIVE BREAKPOINTS
+        ═══════════════════════════════════════════ */
+
+        /* Tablet: compress nav before hiding */
+        @media (max-width: 1200px) {
+            nav ul { gap: 1.8rem; }
+            nav a { font-size: 0.8rem; letter-spacing: 1px; }
+        }
+
+        /* ≤1100px: hide desktop nav, show hamburger */
+        @media (max-width: 1100px) {
+            nav { display: none !important; }
+            .hamburger-btn { display: flex; }
+            .nav-icons { gap: 14px; font-size: 1.3rem; }
+            .logo-text { font-size: 1.1rem; letter-spacing: 0.6px; }
+            .logo-icon { width: 44px; height: 44px; }
+            header { width: 95%; padding: 0.1rem 1.5rem; }
+        }
+
+        @media (max-width: 1024px) {
+            .order-layout { flex-direction: column; }
+            .visual-panel { width: 100%; height: 60vh; position: relative; top: 0; padding: 20px; }
+            .visual-image-wrapper { top: 20px; left: 20px; right: 20px; bottom: 20px; }
+            .form-panel { width: 100%; padding: 40px 5%; }
+        }
+
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; gap: 20px; }
+            .form-group.full-width { grid-column: span 1; }
+            .visual-title { font-size: 2.5rem; }
+            .drawer-panel { width: 100vw; }
+        }
+
+        /* ≤600px: hide logo text */
+        @media (max-width: 600px) {
+            .logo-text { display: none; }
+            .logo-icon { width: 40px; height: 40px; }
+            .logo-container { gap: 0; }
+            header { padding: 0 1.1rem; height: 68px; top: 10px; }
+            .nav-icons { gap: 16px; font-size: 1.3rem; }
+            .nav-icons .divider { display: none; }
+            .drawer-panel { width: 100vw; }
+        }
+
+        /* ≤480px: extra small phones */
+        @media (max-width: 480px) {
+    header {
+        height: 64px;
+        top: 8px;
+    }
+
+    .logo-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .nav-icons {
+        gap: 14px;
+        font-size: 1.2rem;
+    }
+
+    .order-layout {
+        padding-top: 90px;
+    }
+
+    .visual-panel {
+        height: auto;
+        min-height: 650px;
+        padding: 20px;
+    }
+
+    .visual-logo {
+        width: 65px;
+        margin-bottom: 12px;
+    }
+
+    .visual-overlay-content {
+        padding: 60px 25px 25px;
+    }
+
+    .visual-title {
+        font-size: 2rem;
+        line-height: 1.15;
+    }
+
+    .coin-method-card {
+        max-width: 100%;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="images/IMG_3984.PNG" width="82" class="logo-icon" alt="DA Logo">
+            <div class="logo-text">DAKSHA'S ARTISTRY</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="custom-nails.html" class="active">Custom Nails</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="nav-icons" style="display:flex; gap:20px; font-size:1.4rem; color:var(--cocoa); align-items:center;">
+            <div class="icon-wrapper" onclick="openWishlist()">
+                <i class="fa-regular fa-heart"></i>
+                <span class="icon-badge wishlist-counter-badge" style="display:none;">0</span>
+            </div>
+            <span class="divider" style="opacity:0.4; font-size:1rem;">|</span>
+            <div class="icon-wrapper" onclick="openCart()">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="icon-badge cart-counter-badge" style="display:none;">0</span>
+            </div>
+            <span class="divider" style="opacity:0.4; font-size:1rem;">|</span>
+            <a href="login.html" id="login-icon-link" style="color:inherit; display:flex; align-items:center;">
+                <i class="fa-regular fa-user"></i>
+            </a>
+            <a href="dashboard.html" id="user-greeting" style="display:none; color:inherit; align-items:center;"></a>
+            <!-- Hamburger: only visible on mobile via CSS -->
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay" onclick="closeMobileNav()"></div>
+
+    <!-- Mobile Nav Drawer -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer" role="dialog" aria-label="Navigation menu">
+        <div class="mobile-nav-header">
+            <span class="mobile-nav-logo">Daksha's Artistry</span>
+            <button class="mobile-nav-close" onclick="closeMobileNav()" aria-label="Close menu">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="custom-nails.html" class="active">Custom Nails</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="makeup.html">Makeup</a></li>
+        </ul>
+        <div class="mobile-nav-footer">
+            <p>@dakshasartistry</p>
+            <p>Jaipur, Rajasthan</p>
+        </div>
+    </div>
+
+    <main class="order-layout">
+        
+        <div class="visual-panel" data-aos="fade-right" data-aos-duration="1200">
+            <div class="visual-image-wrapper">
+                <img src="images/skill1.jpeg" alt="Custom Nails Aesthetic">
+            </div>
+            
+            <div class="visual-overlay-content">
+                <img src="images/IMG_3984.PNG" alt="Logo" class="visual-logo">
+                <h1 class="visual-title">Your Vision,<br>Handcrafted.</h1>
+                
+                <div class="coin-method-card" data-aos="fade-up" data-aos-delay="300">
+                    <h4>The Coin Method</h4>
+                    <p>To ensure a flawless, bespoke fit, we exclusively use the Coin Method for sizing. Please upload your sizing photo with your order.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-panel">
+            <form id="custom-nail-form">
+                
+                <h2 class="form-section-title" data-aos="fade-up">01. Client Details</h2>
+                <div class="form-grid" data-aos="fade-up" data-aos-delay="100">
+                    <div class="form-group full-width">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" id="client-name" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">WhatsApp Number</label>
+                        <input type="tel" id="client-phone" class="form-control" placeholder="+91" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" id="client-email" class="form-control" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Instagram Handle (Optional)</label>
+                        <input type="text" id="client-ig" class="form-control" placeholder="@yourhandle">
+                    </div>
+                </div>
+
+                <h2 class="form-section-title" data-aos="fade-up">02. The Design</h2>
+                <div class="form-grid" data-aos="fade-up" data-aos-delay="100">
+                    
+                    <div class="form-group">
+                        <label class="form-label">Desired Shape</label>
+                        <select id="nail-shape" class="form-control" required>
+                            <option value="" disabled selected>Select a shape...</option>
+                            <option value="Almond">Almond</option>
+                            <option value="Square">Square</option>
+                            <option value="Coffin">Coffin</option>
+                            <option value="Oval">Oval</option>
+                            <option value="Stiletto">Stiletto</option>
+                            <option value="Round">Round</option>
+                            <option value="Short Square">Short Square</option>
+                            <option value="Medium Almond">Medium Almond</option>
+                            <option value="Other">Other (Specify in notes)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Desired Length</label>
+                        <select id="nail-length" class="form-control" required>
+                            <option value="" disabled selected>Select a length...</option>
+                            <option value="Short">Short</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Long">Long</option>
+                            <option value="Extra Long">Extra Long</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Occasion</label>
+                        <select id="nail-occasion" class="form-control" required>
+                            <option value="" disabled selected>What is the event?</option>
+                            <option value="Everyday Wear">Everyday Wear</option>
+                            <option value="Wedding">Wedding</option>
+                            <option value="Engagement">Engagement</option>
+                            <option value="Baby Shower">Baby Shower</option>
+                            <option value="Birthday">Birthday</option>
+                            <option value="Vacation">Vacation</option>
+                            <option value="Festival">Festival</option>
+                            <option value="Party">Party</option>
+                            <option value="Photoshoot">Photoshoot</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h2 class="form-section-title" data-aos="fade-up">03. Measurements & Inspiration</h2>
+                <div class="form-grid" data-aos="fade-up" data-aos-delay="100">
+                    
+                    <div class="form-group full-width">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 10px;">
+                            <label class="form-label" style="margin-bottom: 0;">Coin Method Photo (Required)</label>
+                            <a href="#" id="open-guide" style="font-size: 0.75rem; color: var(--mocha); font-weight: 600; border-bottom: 1px solid var(--champagne); padding-bottom: 2px;"><i class="fa-solid fa-circle-info"></i> How to measure</a>
+                        </div>
+                        
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="coin-photo" accept="image/*" class="file-input" required>
+                            <label for="coin-photo" class="file-label" id="coin-label">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Upload Sizing Photo</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Design Inspiration (Required)</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="inspo-photo" accept="image/*" class="file-input" required>
+                            <label for="inspo-photo" class="file-label" id="inspo-label">
+                                <i class="fa-regular fa-images"></i>
+                                <span>Upload Reference Image</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="form-label">Additional Design Notes</label>
+                        <textarea id="additional-notes" class="form-control" placeholder="Mention specific color codes, 3D elements, ring finger accents, or any other unique details..."></textarea>
+                    </div>
+                </div>
+
+                <div class="terms-box" data-aos="fade-up">
+                    <h4>Studio Policies</h4>
+                    <ul class="terms-list">
+                        <li>Every set is meticulously handmade to order.</li>
+                        <li>Custom artistry requires dedicated time; we will communicate a timeline upon review.</li>
+                        <li>Screen calibrations vary; real-life colors may differ slightly from digital references.</li>
+                        <li>Due to the bespoke nature of custom orders, no cancellations are permitted after confirmation.</li>
+                    </ul>
+                </div>
+
+                <div data-aos="fade-up">
+                    <button type="submit" class="btn-submit" id="main-submit-btn">Connect on WhatsApp ✨</button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <div id="guide-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 style="font-family: var(--font-heading); margin-bottom: 15px; text-align: center; color: var(--cocoa);">Sizing Guide</h2>
+            <img src="images/coin.PNG" alt="Nail Measurement Guide" class="modal-img">
+        </div>
+    </div>
+
+    <div class="drawer-overlay" id="drawerOverlay" onclick="closeAllDrawers()"></div>
+
+    <div class="drawer-panel wishlist-drawer" id="wishlistDrawer">
+        <div class="drawer-header">
+            <h2>Your Wishlist</h2>
+            <button class="drawer-close" onclick="closeWishlist()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-items" id="wishlistItems"></div>
+    </div>
+
+    <div class="drawer-panel cart-drawer" id="cartDrawer">
+        <div class="drawer-header">
+            <h2>Your Bag</h2>
+            <button class="drawer-close" onclick="closeCart()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="drawer-items" id="cartItems"></div>
+        <div class="drawer-footer" id="cartFooter" style="display:none;">
+            <div class="cart-subtotal"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
+            <div class="cart-subtotal"><span>Shipping</span><span>Free</span></div>
+            <div class="cart-total"><span>Total</span><strong id="cartTotal">₹0</strong></div>
+            <button class="btn-checkout" onclick="window.location.href='checkout.html'">Proceed to Checkout →</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-check-circle"></i>
+        <span id="toastMsg"></span>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true, offset: 50 });
+    </script>
+    
+    <script>
+        /* ─── Mobile Nav ─── */
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mobileNavDrawer = document.getElementById('mobileNavDrawer');
+        const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+
+        function openMobileNav() {
+            hamburgerBtn.classList.add('open');
+            hamburgerBtn.setAttribute('aria-expanded', 'true');
+            mobileNavDrawer.classList.add('active');
+            mobileNavOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileNav() {
+            hamburgerBtn.classList.remove('open');
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+            mobileNavDrawer.classList.remove('active');
+            mobileNavOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        hamburgerBtn.addEventListener('click', function () {
+            if (mobileNavDrawer.classList.contains('active')) {
+                closeMobileNav();
+            } else {
+                openMobileNav();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeMobileNav();
+        });
+    </script>
+
+    <script>
+        // ─────────────────────────────────────────
+        //  CLOUDINARY & FORM LOGIC
+        // ─────────────────────────────────────────
+        const CLOUD_NAME = 'dgiktxjvl'; 
+        const UPLOAD_PRESET = 'nail_uploads';
+
+        let coinPhotoSecureUrl = '';
+        let inspoPhotoSecureUrl = '';
+
+        const modal = document.getElementById("guide-modal");
+        const guideBtn = document.getElementById("open-guide");
+        const closeBtn = document.getElementsByClassName("close-modal")[0];
+
+        guideBtn.onclick = function(e) {
+            e.preventDefault();
+            modal.style.display = "block";
+        }
+        closeBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        async function uploadImageToCloudinary(file, labelElement, iconClass, defaultText) {
+            labelElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Uploading...</span>`;
+            const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', UPLOAD_PRESET);
+
+            try {
+                const response = await fetch(url, { method: 'POST', body: formData });
+                const data = await response.json();
+                
+                if(data.secure_url) {
+                    labelElement.classList.add('success');
+                    labelElement.innerHTML = `<i class="fa-solid fa-check"></i><span>Uploaded Successfully!</span>`;
+                    return data.secure_url;
+                } else {
+                    alert("Cloudinary Error: " + data.error.message);
+                    throw new Error(data.error.message);
+                }
+            } catch (error) {
+                console.error('Upload Error:', error);
+                labelElement.classList.remove('success');
+                labelElement.innerHTML = `<i class="${iconClass}"></i><span>Error. Try Again.</span>`;
+                return '';
+            }
+        }
+
+        document.getElementById('coin-photo').addEventListener('change', async function(e) {
+            if(e.target.files[0]) {
+                coinPhotoSecureUrl = await uploadImageToCloudinary(e.target.files[0], document.getElementById('coin-label'), 'fa-solid fa-cloud-arrow-up', 'Upload Sizing Photo');
+            }
+        });
+
+        document.getElementById('inspo-photo').addEventListener('change', async function(e) {
+            if(e.target.files[0]) {
+                inspoPhotoSecureUrl = await uploadImageToCloudinary(e.target.files[0], document.getElementById('inspo-label'), 'fa-regular fa-images', 'Upload Reference Image');
+            }
+        });
+
+        document.getElementById('custom-nail-form').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            
+            if(!coinPhotoSecureUrl || !inspoPhotoSecureUrl) {
+                alert("Please wait for both images to finish uploading before continuing!");
+                return;
+            }
+            
+            const name = document.getElementById('client-name').value;
+            const phone = document.getElementById('client-phone').value;
+            const email = document.getElementById('client-email').value;
+            const ig = document.getElementById('client-ig').value || 'Not provided';
+            const shape = document.getElementById('nail-shape').value;
+            const length = document.getElementById('nail-length').value;
+            const occasion = document.getElementById('nail-occasion').value;
+            const notes = document.getElementById('additional-notes').value || 'None';
+
+            let message = `*✨ New Custom Nail Order Request ✨*\n\n`;
+            message += `*-- Client Details --*\n`;
+            message += `*Name:* ${name}\n`;
+            message += `*Phone:* ${phone}\n`;
+            message += `*Email:* ${email}\n`;
+            message += `*Instagram:* ${ig}\n\n`;
+            message += `*-- Design Preferences --*\n`;
+            message += `*Shape:* ${shape}\n`;
+            message += `*Length:* ${length}\n`;
+            message += `*Occasion:* ${occasion}\n\n`;
+            message += `*-- Additional Notes --*\n`;
+            message += `${notes}\n\n`;
+            message += `*-- Uploaded References --*\n`;
+            message += `*Sizing Coin Photo:* ${coinPhotoSecureUrl}\n`;
+            message += `*Design Inspiration:* ${inspoPhotoSecureUrl}\n`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const businessPhoneNumber = "918779256660"; 
+            const whatsappURL = `https://wa.me/${businessPhoneNumber}?text=${encodedMessage}`;
+            window.open(whatsappURL, '_blank');
+        });
+
+        // ─────────────────────────────────────────
+        //  DRAWER UI & AUTH SYNC
+        // ─────────────────────────────────────────
+        function openCart() { 
+            document.getElementById('cartDrawer').classList.add('open'); 
+            document.getElementById('drawerOverlay').classList.add('open'); 
+        }
+        function closeCart() { 
+            document.getElementById('cartDrawer').classList.remove('open'); 
+            document.getElementById('drawerOverlay').classList.remove('open'); 
+        }
+        function openWishlist() {
+            document.getElementById('wishlistDrawer').classList.add('open'); 
+            document.getElementById('drawerOverlay').classList.add('open');
+        }
+        function closeWishlist() {
+            document.getElementById('wishlistDrawer').classList.remove('open'); 
+            document.getElementById('drawerOverlay').classList.remove('open');
+        }
+        function closeAllDrawers() { closeCart(); closeWishlist(); }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('customerToken');
+            const customerName = localStorage.getItem('customerName');
+            
+            if (token && customerName) {
+                const loginIcon = document.getElementById('login-icon-link');
+                const greeting = document.getElementById('user-greeting');
+                
+                if (loginIcon) loginIcon.style.display = 'none';
+                if (greeting) {
+                    greeting.style.display = 'flex';
+                    greeting.innerHTML = `<i class="fa-solid fa-user" style="font-size: 1.4rem;"></i>`;
+                }
+            }
+        });
+    </script>
+
+    <script src="global.js"></script>
+
+</body>
+</html>

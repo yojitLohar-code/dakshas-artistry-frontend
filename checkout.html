@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | Daksha's Artistry</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+    <style>
+        /* ─── TOKENS & BASE ─── */
+        :root {
+            --cream: #F6F0E8;
+            --beige: #E7D7C9;
+            --mocha: #8B6B61;
+            --cocoa: #4B302A;
+            --champagne: #C6A27A;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Montserrat', sans-serif;
+            --glass-bg: rgba(246, 240, 232, 0.65);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: var(--font-body); 
+            background-color: #fffdfb; 
+            color: var(--cocoa); 
+            line-height: 1.6; 
+            overflow-x: hidden;
+        }
+
+        /* ─── HEADER ─── */
+        .checkout-header {
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fffdfb;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(198,162,122,0.15);
+        }
+        .logo-text { font-family: var(--font-heading); font-size: 1.6rem; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; color: var(--cocoa); text-decoration: none;}
+        .secure-badge { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--mocha); text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        .secure-badge i { color: var(--champagne); font-size: 1rem; }
+
+        /* ─── LAYOUT ─── */
+        .checkout-container { 
+            display: flex; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            min-height: calc(100vh - 80px);
+            align-items: flex-start;
+        }
+        
+        .checkout-left { flex: 1.3; padding: 60px 6% 120px; }
+        
+        .checkout-right { 
+            flex: 0.9; 
+            background: var(--cream); 
+            padding: 60px 5% 120px; 
+            min-height: calc(100vh - 80px);
+            position: sticky;
+            top: 80px;
+            border-left: 1px solid rgba(198,162,122,0.2);
+        }
+
+        /* ─── TYPOGRAPHY ─── */
+        .step-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 4px; color: var(--champagne); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+        .step-label::before { content: ''; width: 20px; height: 1px; background: var(--champagne); }
+        .section-title { font-family: var(--font-heading); font-size: 2.2rem; margin-bottom: 40px; color: var(--cocoa); font-weight: 400; line-height: 1.1; }
+
+        /* ─── FORMS ─── */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 50px; }
+        .form-group.full, .input-wrap.full { grid-column: span 2; }
+        
+        .input-wrap { position: relative; }
+        .input-wrap label {
+            position: absolute;
+            left: 16px;
+            top: -9px;
+            background: #fffdfb;
+            padding: 0 5px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--mocha);
+            font-weight: 600;
+            z-index: 10;
+        }
+        .form-input {
+            width: 100%; padding: 16px; border: 1px solid rgba(198,162,122,0.3); border-radius: 12px;
+            font-family: var(--font-body); font-size: 0.95rem; color: var(--cocoa); background: transparent; transition: all 0.3s ease;
+        }
+        .form-input:focus { outline: none; border-color: var(--champagne); box-shadow: 0 0 0 4px rgba(198,162,122,0.1); background: #fff; }
+        .form-input::placeholder { color: rgba(139,107,97,0.3); font-style: italic; }
+
+        /* Read-only styling for email */
+        .form-input[readonly] { background: rgba(246, 240, 232, 0.4); color: var(--mocha); border-color: rgba(198,162,122,0.15); }
+        .form-input[readonly] + label { background: transparent; }
+
+        /* ─── PAYMENT METHODS ─── */
+        .payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .pay-option { cursor: pointer; }
+        .pay-option input { display: none; }
+        .pay-box {
+            border: 1px solid rgba(198,162,122,0.3); border-radius: 16px; padding: 25px 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); text-align: center; height: 100%;
+            background: #fff;
+        }
+        .pay-box i { font-size: 2rem; color: rgba(139,107,97,0.4); transition: 0.3s ease; }
+        .pay-box span { font-weight: 600; font-size: 0.85rem; color: var(--mocha); text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Active State */
+        .pay-option input:checked + .pay-box { border-color: var(--champagne); background: var(--cream); box-shadow: 0 10px 30px rgba(198,162,122,0.15); transform: translateY(-3px); }
+        .pay-option input:checked + .pay-box i { color: var(--cocoa); }
+        .pay-option input:checked + .pay-box span { color: var(--cocoa); }
+        
+        /* Disabled COD state for digital products */
+        .pay-option.disabled { opacity: 0.4; cursor: not-allowed; }
+        .pay-option.disabled .pay-box { background: #f9f9f9; transform: none; box-shadow: none; border-color: #eee; }
+        .cod-warning { font-size: 0.75rem; color: #c0392b; background: rgba(192, 57, 43, 0.05); padding: 10px 15px; border-radius: 8px; border-left: 2px solid #c0392b; margin-top: -5px; display: none; }
+
+        /* Security Note */
+        .security-note { padding: 16px 20px; border: 1px dashed rgba(198,162,122,0.4); border-radius: 12px; background: rgba(246,240,232,0.3); color: var(--mocha); font-size: 0.85rem; display: flex; align-items: center; gap: 12px; margin-bottom: 40px; }
+        .security-note i { color: var(--champagne); font-size: 1.2rem; }
+
+        /* ─── SUMMARY (RIGHT SIDE) ─── */
+        .summary-title { font-family: var(--font-heading); font-size: 1.6rem; color: var(--cocoa); margin-bottom: 30px; font-weight: 400; padding-bottom: 20px; border-bottom: 1px solid rgba(198,162,122,0.2); }
+        
+        .summary-item { display: flex; gap: 20px; margin-bottom: 25px; align-items: center; }
+        .summary-img-wrap { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
+        .summary-img { width: 100%; height: 100%; border-radius: 12px; object-fit: cover; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .summary-qty-badge { position: absolute; top: -8px; right: -8px; background: var(--mocha); color: var(--cream); font-size: 0.65rem; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 600; border: 2px solid var(--cream); }
+        
+        .summary-details { flex: 1; }
+        .summary-details h4 { font-family: var(--font-heading); font-size: 1.1rem; color: var(--cocoa); margin-bottom: 4px; }
+        .summary-details p { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--mocha); }
+        .summary-price { font-weight: 600; color: var(--cocoa); font-size: 1.05rem; }
+
+        .totals-box { margin-top: 40px; }
+        .total-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.9rem; color: var(--mocha); text-transform: uppercase; letter-spacing: 1px; }
+        .total-row.grand-total { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(198,162,122,0.3); font-size: 1.6rem; color: var(--cocoa); font-weight: 400; font-family: var(--font-heading); text-transform: none; letter-spacing: 0; align-items: flex-end; }
+        .grand-total span:first-child { font-family: var(--font-body); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; color: var(--mocha); font-weight: 600; padding-bottom: 6px; }
+
+        /* ─── BUTTONS ─── */
+        .btn-pay {
+            width: 100%; padding: 20px; background: var(--cocoa); color: var(--cream);
+            border: none; border-radius: 50px; font-family: var(--font-body); font-size: 0.95rem;
+            text-transform: uppercase; letter-spacing: 3px; font-weight: 600; cursor: pointer;
+            transition: all 0.4s ease; display: flex; justify-content: center; align-items: center; gap: 12px;
+            box-shadow: 0 10px 30px rgba(75,48,42,0.15);
+        }
+        .btn-pay:hover { background: var(--mocha); transform: translateY(-3px); box-shadow: 0 15px 40px rgba(75,48,42,0.25); }
+
+        /* ─── SIMULATED GATEWAY MODAL (GLASSMORPHISM) ─── */
+        .gateway-overlay {
+            position: fixed; inset: 0; background: rgba(42, 28, 24, 0.4); backdrop-filter: blur(8px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: 0.4s ease;
+        }
+        .gateway-overlay.active { opacity: 1; pointer-events: all; }
+        
+        .gateway-modal {
+            background: rgba(255, 255, 255, 0.95); width: 100%; max-width: 420px; border-radius: 24px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.2), inset 0 0 0 1px rgba(255,255,255,0.5);
+            transform: translateY(40px) scale(0.95); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center; padding: 50px 40px;
+        }
+        .gateway-overlay.active .gateway-modal { transform: translateY(0) scale(1); }
+        
+        /* Spinner */
+        .gateway-loader { 
+            border: 3px solid rgba(198,162,122,0.2); border-top: 3px solid var(--cocoa); 
+            border-radius: 50%; width: 60px; height: 60px; animation: spin 1s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
+            margin: 0 auto 25px; 
+        }
+        
+        /* Success Animation */
+        .success-circle {
+            width: 70px; height: 70px; border-radius: 50%; background: #e8f8f0; border: 2px solid #2ecc71;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;
+            transform: scale(0); animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        .success-circle i { color: #2ecc71; font-size: 2rem; }
+        
+        .gateway-title { font-family: var(--font-heading); font-size: 1.8rem; color: var(--cocoa); margin-bottom: 12px; }
+        .gateway-text { font-size: 0.95rem; color: var(--mocha); line-height: 1.6; }
+        
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes popIn { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+
+        @media (max-width: 960px) {
+            .checkout-container { flex-direction: column-reverse; }
+            .checkout-right { position: relative; top: 0; min-height: auto; border-left: none; border-bottom: 1px solid rgba(198,162,122,0.2); padding: 50px 5%; width: 100%;}
+            .checkout-left { padding: 50px 5% 100px; width: 100%; }
+            .form-grid { grid-template-columns: 1fr; gap: 25px; }
+            .form-group.full, .input-wrap.full { grid-column: span 1; }
+        }
+        @media (max-width: 500px) {
+            .payment-methods { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="checkout-header">
+        <a href="index.html" class="logo-text">Daksha's Artistry</a>
+        <div class="secure-badge"><i class="fa-solid fa-shield-check"></i> Secure Checkout</div>
+    </header>
+
+    <div class="checkout-container">
+        
+        <div class="checkout-left">
+            
+            <div data-aos="fade-up">
+                <div class="step-label">Step 01</div>
+                <h2 class="section-title">Delivery Details</h2>
+            </div>
+
+            <form id="checkout-form">
+                <div class="form-grid" data-aos="fade-up" data-aos-delay="100">
+                    <div class="input-wrap full">
+                        <label>Email Address</label>
+                        <input type="email" id="email" class="form-input" required readonly>
+                    </div>
+                    <div class="input-wrap">
+                        <label>First Name</label>
+                        <input type="text" id="fname" class="form-input" required placeholder="Enter first name">
+                    </div>
+                    <div class="input-wrap">
+                        <label>Last Name</label>
+                        <input type="text" id="lname" class="form-input" required placeholder="Enter last name">
+                    </div>
+                    <div class="input-wrap full">
+                        <label>Street Address</label>
+                        <input type="text" id="address" class="form-input" placeholder="House number, Building name, Street" required>
+                    </div>
+                    <div class="input-wrap full">
+                        <label>Apartment, Suite, etc. (Optional)</label>
+                        <input type="text" id="apartment" class="form-input" placeholder="Apartment, suite, unit, etc.">
+                    </div>
+                    <div class="input-wrap full">
+                        <label>Landmark (Optional)</label>
+                        <input type="text" id="landmark" class="form-input" placeholder="e.g. Near Apollo Hospital">
+                    </div>
+                    <div class="input-wrap">
+                        <label>City</label>
+                        <input type="text" id="city" class="form-input" required placeholder="City">
+                    </div>
+                    <div class="input-wrap">
+                        <label>State</label>
+                        <input type="text" id="state" class="form-input" required placeholder="State">
+                    </div>
+                    <div class="input-wrap">
+                        <label>PIN Code</label>
+                        <input type="text" id="pin" class="form-input" required placeholder="000000">
+                    </div>
+                    <div class="input-wrap">
+                        <label>Phone Number</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="+91" required>
+                    </div>
+                </div>
+
+                <div data-aos="fade-up">
+                    <div class="step-label">Step 02</div>
+                    <h2 class="section-title">Payment Method</h2>
+                </div>
+                
+                <div class="payment-methods" data-aos="fade-up" data-aos-delay="100">
+                    <label class="pay-option">
+                        <input type="radio" name="pay_method" value="online" checked onchange="updatePayButton()">
+                        <div class="pay-box">
+                            <i class="fa-regular fa-credit-card"></i>
+                            <span>Pay Online<br><span style="font-size: 0.7rem; opacity: 0.6; font-weight: 500;">Cards, UPI, NetBanking</span></span>
+                        </div>
+                    </label>
+                    <label class="pay-option" id="cod-wrapper">
+                        <input type="radio" name="pay_method" value="cod" id="cod-radio" onchange="updatePayButton()">
+                        <div class="pay-box">
+                            <i class="fa-solid fa-box-open"></i>
+                            <span>Pay on Delivery<br><span style="font-size: 0.7rem; opacity: 0.6; font-weight: 500;">Cash or UPI</span></span>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="cod-warning" id="cod-warning" data-aos="fade-up" data-aos-delay="150">
+                    <i class="fa-solid fa-circle-exclamation"></i> Cash on Delivery is disabled for digital Masterclass enrollments.
+                </div>
+
+                <div class="security-note" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fa-solid fa-lock"></i> 
+                    <span>Your transaction is secured with 256-bit encryption. Daksha's Artistry never stores your payment details.</span>
+                </div>
+
+                <button type="submit" class="btn-pay" id="pay-btn" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fa-solid fa-lock"></i> Pay ₹0
+                </button>
+            </form>
+        </div>
+
+        <div class="checkout-right">
+            <h2 class="summary-title" data-aos="fade-left">Order Summary</h2>
+            <div id="summary-items" data-aos="fade-left" data-aos-delay="100">
+                </div>
+            
+            <div class="totals-box" data-aos="fade-left" data-aos-delay="200">
+                <div class="total-row">
+                    <span>Subtotal</span>
+                    <span id="summary-subtotal">₹0</span>
+                </div>
+                <div class="total-row">
+                    <span>Standard Shipping</span>
+                    <span style="color: var(--cocoa); font-weight: 600;">Complimentary</span>
+                </div>
+                <div class="total-row grand-total">
+                    <span>Total Due</span>
+                    <span id="summary-total">₹0</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="gateway-overlay" id="gatewayOverlay">
+        <div class="gateway-modal">
+            <div id="gw-processing">
+                <div class="gateway-loader"></div>
+                <h3 class="gateway-title" id="gw-dynamic-title">Processing Payment...</h3>
+                <p class="gateway-text">Please do not close or refresh this window.</p>
+            </div>
+            
+            <div id="gw-success" style="display:none;">
+                <div class="success-circle">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 class="gateway-title">Order Confirmed!</h3>
+                <p class="gateway-text">We have received your order. Redirecting to studio...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true, offset: 30 });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const isEnrollment = urlParams.get('enroll') === 'masterclass';
+        let orderTotal = 0;
+        let itemsToRender = []; 
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('customerToken');
+            if (!token) {
+                alert("Please log in to proceed to checkout.");
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Fill email
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            document.getElementById('email').value = "user_" + payload.id + "@dakshasartistry.com"; 
+
+            // Disable COD if it's a digital course
+            if (isEnrollment) {
+                const codWrapper = document.getElementById('cod-wrapper');
+                const codRadio = document.getElementById('cod-radio');
+                codWrapper.classList.add('disabled');
+                codRadio.disabled = true;
+                document.getElementById('cod-warning').style.display = 'block';
+            }
+
+            loadOrderData(token);
+        });
+
+        async function loadOrderData(token) {
+            const summaryContainer = document.getElementById('summary-items');
+            itemsToRender = []; 
+
+            if (isEnrollment) {
+                itemsToRender = [{ 
+                    id: 100, 
+                    name: 'The Foundation & Precision Masterclass', 
+                    price: 4999, 
+                    qty: 1, 
+                    img: 'images/skill2.png',
+                    shape: 'Digital Access'
+                }];
+            } else {
+                try {
+                    const res = await fetch('https://dakshas-artistry-backend-production.up.railway.app/api/cart', {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    });
+                    if(res.ok) itemsToRender = await res.json();
+                } catch(e) {
+                    console.error("Cart fetch failed");
+                }
+            }
+
+            if (itemsToRender.length === 0) {
+                alert("Your bag is empty.");
+                window.location.href = 'shop.html';
+                return;
+            }
+
+            // Render the items
+            summaryContainer.innerHTML = itemsToRender.map(item => `
+                <div class="summary-item">
+                    <div class="summary-img-wrap">
+                        <img src="${item.img || 'images/default.png'}" class="summary-img" onerror="this.src='images/default.png'">
+                        <span class="summary-qty-badge">${item.qty}</span>
+                    </div>
+                    <div class="summary-details">
+                        <h4>${item.name}</h4>
+                        <p>${item.shape || ''}</p>
+                    </div>
+                    <div class="summary-price">₹${(item.price * item.qty).toLocaleString('en-IN')}</div>
+                </div>
+            `).join('');
+
+            // Calculate Math
+            orderTotal = itemsToRender.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            document.getElementById('summary-subtotal').textContent = `₹${orderTotal.toLocaleString('en-IN')}`;
+            document.getElementById('summary-total').textContent = `₹${orderTotal.toLocaleString('en-IN')}`;
+            updatePayButton();
+        }
+
+        function updatePayButton() {
+            const btn = document.getElementById('pay-btn');
+            const method = document.querySelector('input[name="pay_method"]:checked').value;
+            
+            if (method === 'cod') {
+                btn.innerHTML = `<i class="fa-solid fa-box-open"></i> Complete Order (COD)`;
+            } else {
+                btn.innerHTML = `<i class="fa-solid fa-lock"></i> Pay ₹${orderTotal.toLocaleString('en-IN')}`;
+            }
+        }
+
+        // ─── ORDER SUBMISSION ───
+        document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem('customerToken');
+            const method = document.querySelector('input[name="pay_method"]:checked').value;
+            
+            if (method === 'cod') {
+                document.getElementById('gw-dynamic-title').textContent = "Confirming Details...";
+            } else {
+                document.getElementById('gw-dynamic-title').textContent = "Authenticating Payment...";
+            }
+
+            const overlay = document.getElementById('gatewayOverlay');
+            overlay.classList.add('active');
+
+            setTimeout(async () => {
+                try {
+                    // 🔥 GRAB ALL THE NEW SHIPPING DETAILS
+                    const shippingDetails = {
+                        firstName: document.getElementById('fname').value.trim(),
+                        lastName: document.getElementById('lname').value.trim(),
+                        address: document.getElementById('address').value.trim(),
+                        apartment: document.getElementById('apartment').value.trim(), // Added
+                        landmark: document.getElementById('landmark').value.trim(),   // Added
+                        city: document.getElementById('city').value.trim(),
+                        state: document.getElementById('state').value.trim(),
+                        pin: document.getElementById('pin').value.trim(),
+                        phone: document.getElementById('phone').value.trim()
+                    };
+
+                    await fetch('https://dakshas-artistry-backend-production.up.railway.app/api/orders', {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}` 
+                        },
+                        body: JSON.stringify({
+                            items: itemsToRender,
+                            total: orderTotal,
+                            paymentMethod: method === 'cod' ? 'Cash on Delivery' : 'Online Paid',
+                            shippingDetails: shippingDetails 
+                        })
+                    });
+
+                    if (!isEnrollment) {
+                        await fetch('https://dakshas-artistry-backend-production.up.railway.app/api/cart', {
+                            method: 'DELETE',
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        localStorage.removeItem('da_cart'); 
+                    }
+
+                    document.getElementById('gw-processing').style.display = 'none';
+                    document.getElementById('gw-success').style.display = 'block';
+
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 2500);
+
+                } catch(err) {
+                    console.error(err);
+                    alert("A network error occurred. Please check your dashboard to see if the order went through.");
+                    overlay.classList.remove('active');
+                }
+            }, 2500); 
+        });
+    </script>
+</body>
+</html>
