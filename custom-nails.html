@@ -57,7 +57,7 @@
             align-items: center; 
             white-space: nowrap !important; 
             flex-shrink: 0; 
-        }       
+        }        
         nav a {
             font-size: 0.9rem;
             text-transform: uppercase;
@@ -196,7 +196,7 @@
         .btn-submit:hover { background-color: var(--mocha); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(75, 48, 42, 0.3); }
 
         /* ═══════════════════════════════════════════
-           HAMBURGER BUTTON
+            HAMBURGER BUTTON
         ═══════════════════════════════════════════ */
         .hamburger-btn {
             display: none;
@@ -231,7 +231,7 @@
         .hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
         /* ═══════════════════════════════════════════
-           MOBILE NAV DRAWER
+            MOBILE NAV DRAWER
         ═══════════════════════════════════════════ */
         .mobile-nav-drawer {
             display: flex;
@@ -326,8 +326,86 @@
         }
         .mobile-nav-footer p { margin-bottom: 6px; }
 
+        /* ─── CREATIONS SLIDER (ELEGANT UPGRADE) ─── */
+        .creations-slider-section {
+            padding: 140px 0 60px; /* Increased breathing room */
+            background-color: var(--cream);
+            overflow: hidden;
+            position: relative;
+        }
+        .section-title-creations {
+            text-align: center;
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 400;
+            color: var(--cocoa);
+            margin-bottom: 10px;
+        }
+        .section-subtitle-creations {
+            text-align: center;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--mocha);
+            margin-bottom: 60px;
+        }
+        .slider-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 40px 0; /* Extra padding for scale effect overflow */
+        }
+        /* Softer, wider gradients for a seamless fade */
+        .slider-container::before,
+        .slider-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .slider-container::before {
+            left: 0;
+            background: linear-gradient(to right, var(--cream) 0%, rgba(246, 240, 232, 0) 100%);
+        }
+        .slider-container::after {
+            right: 0;
+            background: linear-gradient(to left, var(--cream) 0%, rgba(246, 240, 232, 0) 100%);
+        }
+        .slider-track {
+            display: flex;
+            gap: 60px;
+            width: max-content;
+            /* 5 images * (400px + 60px) = 2300px shift to loop seamlessly */
+            animation: infiniteSlide 40s linear infinite; 
+        }
+        .slider-track:hover {
+            animation-play-state: paused;
+        }
+        .slider-track img {
+            width: 400px;
+            height: 550px;
+            object-fit: cover;
+            border-radius: 8px; /* Sharper corners look more high-end/editorial */
+            box-shadow: 0 15px 40px rgba(75, 48, 42, 0.1);
+            filter: brightness(0.95) contrast(1.05); /* Subtle muted tone un-hovered */
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); /* Buttery smooth easing */
+            cursor: pointer;
+        }
+        .slider-track img:hover {
+            transform: scale(1.04) translateY(-15px);
+            box-shadow: 0 30px 60px rgba(75, 48, 42, 0.2);
+            filter: brightness(1.05) contrast(1.1); /* Pops back to full clarity on hover */
+        }
+        @keyframes infiniteSlide {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-2300px); } 
+        }
+
         /* ═══════════════════════════════════════════
-           RESPONSIVE BREAKPOINTS
+            RESPONSIVE BREAKPOINTS
         ═══════════════════════════════════════════ */
 
         /* Tablet: compress nav before hiding */
@@ -352,12 +430,24 @@
             .visual-image-wrapper { top: 20px; left: 20px; right: 20px; bottom: 20px; }
             .form-panel { width: 100%; padding: 40px 5%; }
         }
+        
+        @media (max-width: 900px) {
+            .slider-container::before, .slider-container::after { width: 80px; }
+        }
 
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; gap: 20px; }
             .form-group.full-width { grid-column: span 1; }
             .visual-title { font-size: 2.5rem; }
             .drawer-panel { width: 100vw; }
+            
+            /* Slider responsive */
+            .section-title-creations { font-size: 2.6rem; margin-bottom: 5px;}
+            .section-subtitle-creations { font-size: 0.75rem; letter-spacing: 2px; margin-bottom: 40px;}
+            .slider-track { gap: 30px; animation-duration: 30s;}
+            .slider-track img { width: 280px; height: 400px; }
+            /* 5 images * (280 + 30) = 1550px */
+            @keyframes infiniteSlide { 100% { transform: translateX(-1550px); } }
         }
 
         /* ≤600px: hide logo text */
@@ -373,49 +463,41 @@
 
         /* ≤480px: extra small phones */
         @media (max-width: 480px) {
-    header {
-        height: 64px;
-        top: 8px;
-    }
-
-    .logo-icon {
-        width: 36px;
-        height: 36px;
-    }
-
-    .nav-icons {
-        gap: 14px;
-        font-size: 1.2rem;
-    }
-
-    .order-layout {
-        padding-top: 90px;
-    }
-
-    .visual-panel {
-        height: auto;
-        min-height: 650px;
-        padding: 20px;
-    }
-
-    .visual-logo {
-        width: 65px;
-        margin-bottom: 12px;
-    }
-
-    .visual-overlay-content {
-        padding: 60px 25px 25px;
-    }
-
-    .visual-title {
-        font-size: 2rem;
-        line-height: 1.15;
-    }
-
-    .coin-method-card {
-        max-width: 100%;
-    }
-}
+            header {
+                height: 64px;
+                top: 8px;
+            }
+            .logo-icon {
+                width: 36px;
+                height: 36px;
+            }
+            .nav-icons {
+                gap: 14px;
+                font-size: 1.2rem;
+            }
+            .order-layout {
+                padding-top: 90px;
+            }
+            .visual-panel {
+                height: auto;
+                min-height: 650px;
+                padding: 20px;
+            }
+            .visual-logo {
+                width: 65px;
+                margin-bottom: 12px;
+            }
+            .visual-overlay-content {
+                padding: 60px 25px 25px;
+            }
+            .visual-title {
+                font-size: 2rem;
+                line-height: 1.15;
+            }
+            .coin-method-card {
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -482,6 +564,29 @@
             <p>Jaipur, Rajasthan</p>
         </div>
     </div>
+
+    <!-- ─── WHAT WE HAVE CREATED SLIDER SECTION ─── -->
+    <section class="creations-slider-section">
+        <h2 class="section-title-creations" data-aos="fade-up">What We Have Created</h2>
+        <p class="section-subtitle-creations" data-aos="fade-up" data-aos-delay="100">Bespoke Designs for Every Client</p>
+        <div class="slider-container" data-aos="fade-up" data-aos-delay="200">
+            <div class="slider-track">
+                <!-- Original 5 Images -->
+                <img src="images/n1.PNG" alt="Custom Creation 1">
+                <img src="images/n2.PNG" alt="Custom Creation 2">
+                <img src="images/n3.PNG" alt="Custom Creation 3">
+                <img src="images/n4.PNG" alt="Custom Creation 4">
+                <img src="images/n5.PNG" alt="Custom Creation 5">
+                
+                <!-- Exact Duplicates appended for seamless infinite looping -->
+                <img src="images/n1.PNG" alt="Custom Creation 1">
+                <img src="images/n2.PNG" alt="Custom Creation 2">
+                <img src="images/n3.PNG" alt="Custom Creation 3">
+                <img src="images/n4.PNG" alt="Custom Creation 4">
+                <img src="images/n5.PNG" alt="Custom Creation 5">
+            </div>
+        </div>
+    </section>
 
     <main class="order-layout">
         
