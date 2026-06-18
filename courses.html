@@ -21,6 +21,7 @@
             --champagne: #C6A27A;
             --font-heading: 'Playfair Display', serif;
             --font-body: 'Montserrat', sans-serif;
+            --whatsapp: #25D366;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -219,14 +220,19 @@
         
         @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ─── MASTERCLASS FEATURE LAYOUT ─── */
-        .masterclass-section { padding: 40px 8% 120px; display: flex; gap: 70px; align-items: flex-start; max-width: 1500px; margin: 0 auto; }
+        /* ─── MASTERCLASS FEATURE LAYOUT (Online & Offline) ─── */
+        .masterclass-section { padding: 40px 8% 80px; display: flex; gap: 70px; align-items: flex-start; max-width: 1500px; margin: 0 auto; }
         
+        /* Alternate Layout for Offline Course */
+        .offline-section { padding-bottom: 120px; flex-direction: row-reverse; }
+
         .mc-visual { width: 50%; position: sticky; top: 120px; border-radius: 20px; overflow: hidden; box-shadow: 0 25px 60px rgba(75, 48, 42, 0.1); }
         .mc-visual img { width: 100%; height: auto; display: block; object-fit: cover; }
         
         .mc-content { width: 50%; padding-top: 20px; }
         .mc-badge { display: inline-block; padding: 6px 14px; background: var(--cocoa); color: var(--cream); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; border-radius: 50px; margin-bottom: 20px; font-weight: 600; }
+        .mc-badge.offline-badge { background: var(--mocha); }
+
         .mc-title { font-family: var(--font-heading); font-size: 2.8rem; color: var(--cocoa); margin-bottom: 15px; line-height: 1.15; }
         .mc-price-row { display: flex; align-items: baseline; gap: 15px; margin-bottom: 30px; padding-bottom: 25px; border-bottom: 1px solid rgba(198,162,122,0.3); }
         .mc-price { font-size: 2rem; font-weight: 500; color: var(--cocoa); }
@@ -255,6 +261,12 @@
         .mc-actions { display: flex; gap: 15px; }
         .btn-enroll { flex: 1; padding: 1.2rem; background: var(--cocoa); color: var(--cream); border: none; border-radius: 50px; font-family: var(--font-body); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: all 0.35s ease; box-shadow: 0 10px 25px rgba(75, 48, 42, 0.2); display: flex; align-items: center; justify-content: center; gap: 10px; }
         .btn-enroll:hover { background: var(--mocha); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(75, 48, 42, 0.3); }
+        
+        .btn-whatsapp { background: var(--whatsapp); color: white; }
+        .btn-whatsapp:hover { background: #1ebd5a; box-shadow: 0 15px 30px rgba(37, 211, 102, 0.3); }
+
+        /* Divider between courses */
+        .course-divider { width: 80%; height: 1px; background: rgba(198,162,122,0.3); margin: 0 auto; display: block; }
 
         /* ─── FOOTER ─── */
         .footer { background: #4B302A; color: #F6F0E8; padding: 90px 8% 30px; }
@@ -285,16 +297,13 @@
         
         @media (max-width: 1024px) {
             .masterclass-section { flex-direction: column; }
+            .offline-section { flex-direction: column; } /* Reset reverse layout on mobile */
             .mc-visual { width: 100%; position: relative; top: 0; }
             .mc-content { width: 100%; }
         }
 
-        /* STRICT MOBILE FIX: Fix iOS Fixed Background Bug */
-/* STRICT MOBILE FIX: Fix iOS Fixed Background Bug & Footer Grid */
         @media (max-width: 900px) {
             .course-bg-container { background-attachment: scroll !important; }
-            
-            /* THIS FIXES THE FOOTER */
             .footer-container { grid-template-columns: 1fr; gap: 40px; }
         }
 
@@ -383,6 +392,7 @@
             <li><a href="about.html">About</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="makeup.html">Makeup</a></li>
+            <li><a href="services.html">Nail Services</a></li>
         </ul>
         <div class="mobile-nav-footer">
             <p>@dakshasartistry</p>
@@ -405,10 +415,11 @@
         </div>
     </section>
 
+    <!-- ONLINE MASTERCLASS -->
     <section class="masterclass-section">
         
         <div class="mc-visual" data-aos="fade-right">
-            <img src="images/skill2.png" alt="Nail Artistry Masterclass">
+            <img src="images/skill2.png" alt="Online Nail Artistry Masterclass">
         </div>
 
         <div class="mc-content" data-aos="fade-left">
@@ -416,7 +427,7 @@
             <h2 class="mc-title">The Foundation & Precision Masterclass</h2>
             
             <div class="mc-price-row">
-                <span class="mc-price">₹2,499</span>
+                <span class="mc-price">₹1,500</span>
                 <span class="mc-price-old">₹29,999</span>
             </div>
 
@@ -432,7 +443,7 @@
                         <p>Detailed module breakdown & supply list</p>
                     </div>
                 </div>
-                <a href="Course_description.pdf" download="Daksha_Artistry_Masterclass_Curriculum.pdf" class="btn-download-pdf">
+                <a href="COURSES.pdf" download="Daksha_Artistry_Masterclass_Curriculum.pdf" class="btn-download-pdf">
                     <i class="fa-solid fa-download"></i> Download PDF
                 </a>
             </div>
@@ -475,6 +486,62 @@
 
     </section>
 
+    <span class="course-divider"></span>
+
+    <!-- OFFLINE COURSE -->
+    <section class="masterclass-section offline-section">
+        
+        <div class="mc-visual" data-aos="fade-left">
+            <img src="images/studio.jpg" alt="In-Studio Offline Nail Artistry Course" onerror="this.src='images/skill1.jpeg'">
+        </div>
+
+        <div class="mc-content" data-aos="fade-right">
+            <span class="mc-badge offline-badge">In-Studio Experience</span>
+            <h2 class="mc-title">The Offline Academy <br><em>Ahmedabad</em></h2>
+            
+            <p class="mc-description">
+                Prefer hands-on, deeply personalized guidance? Join our immersive offline training directly at our Jaipur studio. Designed for those who want to master the craft with live demonstrations, immediate physical corrections, and real-time mentorship from Daksha herself.
+            </p>
+
+            <div class="mc-how-it-works" data-aos="fade-up">
+                <h3>What You'll Experience</h3>
+                
+                <div class="step-row">
+                    <div class="step-icon"><i class="fa-solid fa-paintbrush"></i></div>
+                    <div class="step-text">
+                        <h4>Hands-on Practice</h4>
+                        <p>Work directly under professional supervision to perfect your gel application, structure, and intricate nail art techniques.</p>
+                    </div>
+                </div>
+
+                <div class="step-row">
+                    <div class="step-icon"><i class="fa-solid fa-box-open"></i></div>
+                    <div class="step-text">
+                        <h4>Premium Tools Provided</h4>
+                        <p>Practice with high-end, cruelty-free salon materials and equipment during your studio hours.</p>
+                    </div>
+                </div>
+
+                <div class="step-row">
+                    <div class="step-icon"><i class="fa-solid fa-certificate"></i></div>
+                    <div class="step-text">
+                        <h4>Certification</h4>
+                        <p>Receive an industry-recognized certificate upon completion to jumpstart your professional career.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mc-actions">
+                <button class="btn-enroll btn-whatsapp" onclick="window.open('https://wa.me/918779256660?text=Hi%20Daksha%27s%20Artistry!%20I%20would%20like%20to%20know%20more%20details%20about%20your%20Offline%20Nail%20Artistry%20Course%20in%20Jaipur.', '_blank')">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 1.2rem;"></i> Connect via WhatsApp
+                </button>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- DRAWERS (Cart & Wishlist) -->
     <div class="drawer-overlay" id="drawerOverlay" onclick="closeAllDrawers()"></div>
 
     <div class="drawer-panel wishlist-drawer" id="wishlistDrawer">
@@ -508,7 +575,7 @@
         <div class="footer-container">
             <div class="footer-brand">
                 <h2>Daksha's Artistry</h2>
-                <p>Professional Makeup Artist, Nail Technician & Educator based in Ahmedabad. Creating beautiful transformations through makeup artistry, nail enhancements, and professional nail training.</p>
+                <p>Luxury handcrafted press-on nails designed to elevate your everyday elegance.</p>
             </div>
             <div class="footer-links">
                 <h3>Quick Links</h3>
@@ -522,9 +589,9 @@
             </div>
             <div class="footer-contact">
                 <h3>Studio & Contact</h3>
-                <p>Instagram: dakshas_artistry_</p>
-                <p>Email: dakshasartistry66@gmail.com</p>
-                <p>2MMF+352, Nikol<br>Ahmedabad, Gujarat 380049<br>India</p>
+                <p>Instagram: @dakshasartistry</p>
+                <p>Email: hello@dakshasartistry.com</p>
+                <p>123 Artistry Lane, Vaishali Nagar<br>Jaipur, Rajasthan 302021<br>India</p>
             </div>
         </div>
         <div class="footer-bottom">© 2026 Daksha's Artistry. All Rights Reserved.</div>
@@ -624,7 +691,7 @@
                         
                         courseBtn.onclick = (e) => {
                             e.preventDefault();
-                            window.location.href = 'https://instagram.com/dakshasartistry'; 
+                            window.location.href = 'https://www.instagram.com/basic_to_diploma_course?igsh=MXR1Mmw0eDZybmN1aw=='; 
                         };
                     }
                 }
