@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<title>Nail Services – Daksha's Artistry</title>
+<style>
+  :root {
+    /* Dark Luxury Palette */
+    --bg-espresso: #160E0A;
+    --surface-mocha: #221711;
+    --surface-lighter: #2C1F17;
+    --text-cream: #F0EBE1;
+    --text-muted: #A89B8F;
+    --accent-cognac: #C89F70;
+    --border-soft: rgba(200, 159, 112, 0.15);
+    --glass-dark: rgba(22, 14, 10, 0.75);
+    
+    --transition-smooth: all 0.5s cubic-bezier(0.25, 1, 0.05, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  
+  * { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+  }
+  
+  body {
+    background-color: var(--bg-espresso);
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-cream);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--accent-cognac);
+    color: var(--bg-espresso);
+  }
+
+  /* ── UTILITIES & ANIMATIONS ── */
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s cubic-bezier(0.25, 1, 0.05, 1), transform 1s cubic-bezier(0.25, 1, 0.05, 1);
+  }
+  .reveal-up.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .stagger-item {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: var(--transition-smooth);
+  }
+  .in-view .stagger-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── NAVIGATION ── */
+  .nav-back {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    transition: var(--transition-smooth);
+    z-index: 100;
+  }
+  
+  .nav-back:hover {
+    color: var(--accent-cognac);
+    transform: translateX(-4px);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative;
+    /* Cinematic spotlight effect */
+    background: radial-gradient(circle at center top, #2C1F17 0%, var(--bg-espresso) 70%);
+  }
+  
+  .hero-badge {
+    font-size: 9px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--accent-cognac);
+    font-weight: 500;
+    margin-bottom: 32px;
+    padding: 8px 16px;
+    border: 1px solid var(--border-soft);
+    border-radius: 100px;
+    background: rgba(44, 31, 23, 0.3);
+  }
+  
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(48px, 8vw, 84px);
+    font-weight: 400;
+    color: var(--text-cream);
+    line-height: 1.1;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+  }
+  
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent-cognac);
+  }
+  
+  .hero p {
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    font-weight: 300;
+    max-width: 460px;
+    line-height: 1.8;
+  }
+
+  /* ── GALLERY STRIP ── */
+  .gallery-section {
+    padding: 0 0 100px;
+    overflow: hidden;
+  }
+  
+  .gallery-track-wrap {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    margin-bottom: 40px;
+  }
+  
+  .gallery-track {
+    display: flex;
+    gap: 32px;
+    width: max-content;
+    will-change: transform;
+  }
+  
+  .row-left .gallery-track { animation: slideLeft 50s linear infinite; }
+  .row-right .gallery-track { animation: slideRight 60s linear infinite; }
+
+  @keyframes slideLeft {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes slideRight {
+    0% { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+
+  .nail-card {
+    width: 300px;
+    height: 420px;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+    background: var(--surface-mocha);
+    border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+  
+  .nail-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.05, 1);
+    /* Desaturated slightly to fit the dark vibe, colors pop on hover */
+    filter: brightness(0.85) contrast(1.1) grayscale(20%);
+  }
+  
+  .nail-card:hover img { 
+    transform: scale(1.05); 
+    filter: brightness(1) contrast(1.05) grayscale(0%);
+  }
+  
+  /* Dark Glassmorphism Label */
+  .nail-card-label {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    background: var(--glass-dark);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(200, 159, 112, 0.2);
+    padding: 16px;
+    color: var(--text-cream);
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: var(--transition-smooth);
+  }
+  
+  .nail-card:hover .nail-card-label { 
+    opacity: 1; 
+    transform: translateY(0);
+  }
+
+  /* ── SERVICES SECTION ── */
+  .services-section {
+    background: var(--surface-mocha);
+    padding: 120px 24px;
+    border-top: 1px solid var(--border-soft);
+  }
+  
+  .section-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 56px);
+    color: var(--text-cream);
+    font-weight: 400;
+    margin-bottom: 16px;
+  }
+  
+  .section-title em { color: var(--accent-cognac); }
+  
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    max-width: 1080px;
+    margin: 0 auto 100px;
+  }
+  
+  .service-pill {
+    background: var(--bg-espresso);
+    border: 1px solid var(--border-soft);
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: var(--transition-bounce);
+    position: relative;
+  }
+  
+  .service-pill:hover { 
+    border-color: var(--accent-cognac); 
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); 
+  }
+  
+  .service-pill:active {
+    transform: scale(0.98);
+  }
+  
+  .service-pill.selected { 
+    background: var(--accent-cognac);
+    border-color: var(--accent-cognac); 
+  }
+  
+  .service-name {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-cream);
+    letter-spacing: 0.5px;
+    transition: var(--transition-smooth);
+  }
+  
+  .service-pill.selected .service-name {
+    color: var(--bg-espresso);
+    font-weight: 500;
+  }
+
+  .service-check {
+    width: 20px; height: 20px;
+    border: 1px solid var(--text-muted);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition-smooth);
+  }
+  
+  .service-pill.selected .service-check {
+    border-color: var(--bg-espresso);
+  }
+  
+  .service-check svg { 
+    opacity: 0; 
+    stroke: var(--bg-espresso);
+    transform: scale(0.5);
+    transition: var(--transition-bounce); 
+  }
+  
+  .service-pill.selected .service-check svg { 
+    opacity: 1; 
+    transform: scale(1);
+  }
+
+  /* ── BOOKING FORM (Floating Labels) ── */
+  .form-container {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  
+  .form-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  
+  .form-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    font-weight: 400;
+    margin-bottom: 12px;
+    color: var(--text-cream);
+  }
+
+  .selected-pills-wrap {
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  
+  .selected-pills-title {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-cognac);
+    margin-bottom: 16px;
+  }
+
+  .selected-pills {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    min-height: 32px;
+  }
+  
+  .mini-pill {
+    background: var(--surface-lighter);
+    border: 1px solid var(--border-soft);
+    padding: 8px 16px;
+    font-size: 11px;
+    color: var(--accent-cognac);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    border-radius: 100px;
+    animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* Floating Input Magic */
+  .input-group {
+    position: relative;
+    margin-bottom: 32px;
+  }
+  
+  .form-two-col { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 32px; 
+  }
+
+  .floating-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-soft);
+    padding: 16px 0 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    color: var(--text-cream);
+    outline: none;
+    transition: var(--transition-smooth);
+    border-radius: 0;
+  }
+  
+  /* Dark mode specific autocomplete styling */
+  .floating-input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 30px var(--surface-mocha) inset !important;
+    -webkit-text-fill-color: var(--text-cream) !important;
+  }
+  
+  .floating-input:focus {
+    border-bottom-color: var(--accent-cognac);
+  }
+
+  .floating-label {
+    position: absolute;
+    left: 0;
+    top: 16px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 300;
+    pointer-events: none;
+    transition: var(--transition-smooth);
+  }
+
+  .floating-input:focus ~ .floating-label,
+  .floating-input:not(:placeholder-shown) ~ .floating-label {
+    top: -8px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent-cognac);
+    font-weight: 500;
+  }
+  
+  .floating-input::placeholder {
+    color: transparent;
+  }
+
+  /* Calendar icon fix for dark mode */
+  input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) opacity(0.6);
+    cursor: pointer;
+  }
+
+  textarea.floating-input {
+    resize: none;
+    min-height: 80px;
+  }
+
+  .whatsapp-btn {
+    width: 100%;
+    background: var(--accent-cognac);
+    color: var(--bg-espresso);
+    border: none;
+    padding: 24px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    transition: var(--transition-smooth);
+    margin-top: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .whatsapp-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%; width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+    transition: 0.5s;
+  }
+  
+  .whatsapp-btn:hover {
+    background: #E0BA8C;
+  }
+  
+  .whatsapp-btn:hover::before {
+    left: 100%;
+  }
+
+  @media (max-width: 600px) {
+    .nav-back { top: 24px; left: 24px; }
+    .form-two-col { grid-template-columns: 1fr; gap: 0; }
+    .hero { padding: 100px 24px 60px; }
+    .gallery-track { gap: 16px; }
+    .nail-card { width: 240px; height: 340px; }
+    .services-section { padding: 80px 24px; }
+  }
+
+  /* ── FOOTER ── */
+  .footer-strip {
+    background: var(--bg-espresso);
+    padding: 48px 24px;
+    text-align: center;
+    border-top: 1px solid var(--border-soft);
+  }
+  
+  .footer-strip p {
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero reveal-up">
+  
+  <!-- BACK TO HOME LINK -->
+  <a href="index.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    Studio Home
+  </a>
+
+  <div class="hero-badge">Daksha's Artistry · Ahmedabad</div>
+  <h1>Precision &<br><em>Elegance</em></h1>
+  <p>A curated approach to modern nail aesthetics. Review our bespoke treatments below and reserve your session.</p>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section reveal-up">
+  <!-- Row 1 -->
+  <div class="gallery-track-wrap row-left">
+    <div class="gallery-track" id="row1">
+      <div class="nail-card"><img src="images/n1.PNG" alt="Editorial Nails"><div class="nail-card-label">Gel Polish</div></div>
+      <div class="nail-card"><img src="images/n2.PNG" alt="Editorial Nails"><div class="nail-card-label">Minimal Work</div></div>
+      <div class="nail-card"><img src="images/n3.PNG" alt="Editorial Nails"><div class="nail-card-label">Bespoke Art</div></div>
+      <div class="nail-card"><img src="images/n4.PNG" alt="Editorial Nails"><div class="nail-card-label">Sculpted Extensions</div></div>
+      <div class="nail-card"><img src="images/n5.PNG" alt="Editorial Nails"><div class="nail-card-label">Detailed Art</div></div>
+      <div class="nail-card"><img src="images/n6.jpeg" alt="Editorial Nails"><div class="nail-card-label">Structure Gel</div></div>
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="gallery-track-wrap row-right">
+    <div class="gallery-track" id="row2">
+      <div class="nail-card"><img src="images/n7.jpeg" alt="Editorial Nails"><div class="nail-card-label">Structure Gel</div></div>
+      <div class="nail-card"><img src="images/n8.jpeg" alt="Editorial Nails"><div class="nail-card-label">Minimalist Detail</div></div>
+      <div class="nail-card"><img src="images/n9.jpeg" alt="Editorial Nails"><div class="nail-card-label">Sculpted Extensions</div></div>
+      <div class="nail-card"><img src="images/n10.jpeg" alt="Editorial Nails"><div class="nail-card-label">Bespoke Art</div></div>
+      <div class="nail-card"><img src="images/n11.jpeg" alt="Editorial Nails"><div class="nail-card-label">Bespoke Art</div></div>
+      <div class="nail-card"><img src="images/n12.jpeg" alt="Editorial Nails"><div class="nail-card-label">Premium Finishing</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES + FORM -->
+<section class="services-section reveal-up">
+  <div class="section-header">
+    <h2 class="section-title">Service <em>Menu</em></h2>
+  </div>
+
+  <!-- SERVICE PILLS -->
+  <div class="services-grid" id="serviceGrid">
+    <!-- JS rendered with stagger -->
+  </div>
+
+  <!-- BOOKING FORM -->
+  <div class="form-container reveal-up">
+    <div class="form-header">
+      <h3 class="form-title">Reserve Your Time</h3>
+    </div>
+
+    <div class="selected-pills-wrap">
+      <div class="selected-pills-title">Selected Treatments</div>
+      <div class="selected-pills" id="selectedPills">
+        <span style="font-size:13px;color:var(--text-muted);font-weight:300;font-style:italic;">Awaiting your selection...</span>
+      </div>
+    </div>
+
+    <div class="form-two-col">
+      <div class="input-group">
+        <input type="text" id="fname" class="floating-input" placeholder=" ">
+        <label class="floating-label" for="fname">Full Name</label>
+      </div>
+      <div class="input-group">
+        <input type="tel" id="fphone" class="floating-input" placeholder=" ">
+        <label class="floating-label" for="fphone">Phone Number</label>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <input type="datetime-local" id="fdate" class="floating-input" placeholder=" " required>
+      <label class="floating-label" for="fdate">Preferred Date & Time</label>
+    </div>
+
+    <div class="input-group">
+      <textarea id="fnotes" class="floating-input" placeholder=" "></textarea>
+      <label class="floating-label" for="fnotes">Consultation Notes (Inspiration, length, etc.)</label>
+    </div>
+
+    <button class="whatsapp-btn" onclick="sendToWhatsApp()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--bg-espresso)"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Request Appointment
+    </button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer-strip">
+  <p>© 2026 Daksha's Artistry · Ahmedabad</p>
+</div>
+
+<script>
+const SERVICES = [
+  { id: 'gel_polish', name: 'Gel Polish' },
+  { id: 'semi_perm', name: 'Semi-Permanent' },
+  { id: 'gel_x', name: 'Gel X Extensions' },
+  { id: 'gel_ext', name: 'Gel Extensions' },
+  { id: 'acrylic', name: 'Acrylic Sculpting' },
+  { id: 'polygel', name: 'Polygel Hybrid' },
+  { id: 'removal', name: 'Professional Removal' },
+  { id: 'refill', name: 'Maintenance Refill' },
+  { id: 'nail_art', name: 'Bespoke Nail Art' },
+];
+
+const selected = new Set();
+const grid = document.getElementById('serviceGrid');
+const pillBox = document.getElementById('selectedPills');
+
+// Duplicate gallery loops
+function duplicateTrack(id) {
+  const track = document.getElementById(id);
+  if (!track) return;
+  const clone = track.innerHTML;
+  track.innerHTML = clone + clone;
+}
+duplicateTrack('row1');
+duplicateTrack('row2');
+
+// Render Grid with CSS delays for staggering
+SERVICES.forEach((s, index) => {
+  const pill = document.createElement('div');
+  pill.className = 'service-pill stagger-item';
+  pill.style.transitionDelay = `${index * 0.05}s`; // Stagger effect
+  pill.dataset.id = s.id;
+  pill.innerHTML = `
+    <span class="service-name">${s.name}</span>
+    <div class="service-check">
+      <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+        <path d="M1 4L3.5 6.5L9 1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  `;
+  pill.addEventListener('click', () => toggleService(s, pill));
+  grid.appendChild(pill);
+});
+
+function toggleService(s, pill) {
+  if (selected.has(s.id)) {
+    selected.delete(s.id);
+    pill.classList.remove('selected');
+  } else {
+    selected.add(s.id);
+    pill.classList.add('selected');
+  }
+  updatePillBox();
+}
+
+function updatePillBox() {
+  if (selected.size === 0) {
+    pillBox.innerHTML = '<span style="font-size:13px;color:var(--text-muted);font-weight:300;font-style:italic;">Awaiting your selection...</span>';
+  } else {
+    const names = SERVICES.filter(s => selected.has(s.id)).map(s => s.name);
+    pillBox.innerHTML = names.map(n => `<span class="mini-pill">${n}</span>`).join('');
+  }
+}
+
+function sendToWhatsApp() {
+  const name = document.getElementById('fname').value.trim();
+  const phone = document.getElementById('fphone').value.trim();
+  const datetime = document.getElementById('fdate').value;
+  const notes = document.getElementById('fnotes').value.trim();
+
+  if (selected.size === 0) {
+    alert('Please select at least one treatment.');
+    return;
+  }
+  if (!name) {
+    alert('Please provide your name to secure the booking.');
+    return;
+  }
+
+  const serviceList = SERVICES.filter(s => selected.has(s.id)).map(s => `• ${s.name}`).join('\n');
+
+  let dtStr = '';
+  if (datetime) {
+    const d = new Date(datetime);
+    dtStr = d.toLocaleString('en-IN', { dateStyle: 'long', timeStyle: 'short' });
+  }
+
+  let msg = `*Private Booking Request | Daksha's Artistry*\n\n`;
+  msg += `*Client:* ${name}\n`;
+  if (phone) msg += `*Contact:* ${phone}\n`;
+  if (dtStr) msg += `*Preferred Time:* ${dtStr}\n`;
+  msg += `\n*Selected Treatments:*\n${serviceList}`;
+  if (notes) msg += `\n\n*Consultation Notes:* ${notes}`;
+
+  const waNumber = '918779256660'; 
+  const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+
+// Scroll Observers
+document.addEventListener("DOMContentLoaded", () => {
+  const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal-up, .services-grid').forEach(el => observer.observe(el));
+});
+</script>
+</body>
+</html>
