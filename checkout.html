@@ -106,7 +106,7 @@
         .form-input[readonly] + label { background: transparent; }
 
         /* ─── PAYMENT METHODS ─── */
-        .payment-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .payment-methods { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 25px; }
         .pay-option { cursor: pointer; }
         .pay-option input { display: none; }
         .pay-box {
@@ -282,18 +282,10 @@
                             <span>Pay Online<br><span style="font-size: 0.7rem; opacity: 0.6; font-weight: 500;">Cards, UPI, NetBanking</span></span>
                         </div>
                     </label>
-                    <label class="pay-option" id="cod-wrapper">
-                        <input type="radio" name="pay_method" value="cod" id="cod-radio" onchange="updatePayButton()">
-                        <div class="pay-box">
-                            <i class="fa-solid fa-box-open"></i>
-                            <span>Pay on Delivery<br><span style="font-size: 0.7rem; opacity: 0.6; font-weight: 500;">Cash or UPI</span></span>
-                        </div>
-                    </label>
-                </div>
+                    
                 
-                <div class="cod-warning" id="cod-warning" data-aos="fade-up" data-aos-delay="150">
-                    <i class="fa-solid fa-circle-exclamation"></i> Cash on Delivery is disabled for digital Masterclass enrollments.
-                </div>
+                
+                
 
                 <div class="security-note" data-aos="fade-up" data-aos-delay="200">
                     <i class="fa-solid fa-lock"></i> 
@@ -318,7 +310,7 @@
                 </div>
                 <div class="total-row">
                     <span>Standard Shipping</span>
-                    <span style="color: var(--cocoa); font-weight: 600;">Complimentary</span>
+                    <span id="shipping-charge" style="color: var(--cocoa); font-weight: 600;">₹120</span>
                 </div>
                 <div class="total-row grand-total">
                     <span>Total Due</span>
@@ -348,12 +340,14 @@
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
         AOS.init({ duration: 1000, once: true, offset: 30 });
 
         const urlParams = new URLSearchParams(window.location.search);
         const isEnrollment = urlParams.get('enroll') === 'masterclass';
         let orderTotal = 0;
+        const SHIPPING_CHARGE = 120;
         let itemsToRender = []; 
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -426,89 +420,167 @@
             `).join('');
 
             // Calculate Math
-            orderTotal = itemsToRender.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const subtotal = itemsToRender.reduce(
+    (sum, item) => sum + (item.price * item.qty),
+    0
+);
+
+orderTotal = subtotal + SHIPPING_CHARGE;
+
+document.getElementById("summary-subtotal").textContent =
+    `₹${subtotal.toLocaleString("en-IN")}`;
+
+document.getElementById("summary-total").textContent =
+    `₹${orderTotal.toLocaleString("en-IN")}`;
+
+
             
-            document.getElementById('summary-subtotal').textContent = `₹${orderTotal.toLocaleString('en-IN')}`;
-            document.getElementById('summary-total').textContent = `₹${orderTotal.toLocaleString('en-IN')}`;
+            
             updatePayButton();
         }
 
         function updatePayButton() {
-            const btn = document.getElementById('pay-btn');
-            const method = document.querySelector('input[name="pay_method"]:checked').value;
-            
-            if (method === 'cod') {
-                btn.innerHTML = `<i class="fa-solid fa-box-open"></i> Complete Order (COD)`;
-            } else {
-                btn.innerHTML = `<i class="fa-solid fa-lock"></i> Pay ₹${orderTotal.toLocaleString('en-IN')}`;
-            }
-        }
+    const btn = document.getElementById('pay-btn');
+
+    btn.innerHTML =
+        `<i class="fa-solid fa-lock"></i> Pay ₹${orderTotal.toLocaleString('en-IN')}`;
+}
 
         // ─── ORDER SUBMISSION ───
         document.getElementById('checkout-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const token = localStorage.getItem('customerToken');
-            const method = document.querySelector('input[name="pay_method"]:checked').value;
-            
-            if (method === 'cod') {
-                document.getElementById('gw-dynamic-title').textContent = "Confirming Details...";
-            } else {
-                document.getElementById('gw-dynamic-title').textContent = "Authenticating Payment...";
+// Shipping Details
+const shippingDetails = {
+    firstName: document.getElementById('fname').value.trim(),
+    lastName: document.getElementById('lname').value.trim(),
+    address: document.getElementById('address').value.trim(),
+    apartment: document.getElementById('apartment').value.trim(),
+    landmark: document.getElementById('landmark').value.trim(),
+    city: document.getElementById('city').value.trim(),
+    state: document.getElementById('state').value.trim(),
+    pin: document.getElementById('pin').value.trim(),
+    phone: document.getElementById('phone').value.trim()
+};
+
+// Create Razorpay Order
+const orderResponse = await fetch(
+    'https://dakshas-artistry-backend-production.up.railway.app/api/payment/create-order',
+    {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            amount: orderTotal
+        })
+    }
+);
+
+if (!orderResponse.ok) {
+    const errorText = await orderResponse.text();
+    console.log(errorText);
+    alert("Unable to create payment.\n\n" + errorText);
+    return;
+}
+
+const order = await orderResponse.json();
+const options = {
+    key: "rzp_live_T6Fxct4dq43sNb",
+    amount: order.amount,
+    currency: order.currency,
+    name: "Daksha's Artistry",
+    description: "Order Payment",
+    image: "images/logo.png", // optional
+
+    order_id: order.id,
+
+    handler: async function (response) {
+
+    // Verify payment
+    const verifyResponse = await fetch(
+        "https://dakshas-artistry-backend-production.up.railway.app/api/payment/verify",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(response)
+        }
+    );
+
+    const verifyResult = await verifyResponse.json();
+
+    if (!verifyResult.success) {
+        alert("Payment verification failed.");
+        return;
+    }
+
+    // Save order
+    const saveOrder = await fetch(
+        "https://dakshas-artistry-backend-production.up.railway.app/api/orders",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                items: itemsToRender,
+                total: orderTotal,
+                paymentMethod: "Razorpay",
+                shippingDetails
+            })
+        }
+    );
+
+    if (!saveOrder.ok) {
+        alert("Payment succeeded, but the order couldn't be saved.");
+        return;
+    }
+
+    // Clear cart
+    await fetch(
+        "https://dakshas-artistry-backend-production.up.railway.app/api/cart",
+        {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
             }
+        }
+    );
 
-            const overlay = document.getElementById('gatewayOverlay');
-            overlay.classList.add('active');
+    localStorage.removeItem("da_cart");
 
-            setTimeout(async () => {
-                try {
-                    // 🔥 GRAB ALL THE NEW SHIPPING DETAILS
-                    const shippingDetails = {
-                        firstName: document.getElementById('fname').value.trim(),
-                        lastName: document.getElementById('lname').value.trim(),
-                        address: document.getElementById('address').value.trim(),
-                        apartment: document.getElementById('apartment').value.trim(), // Added
-                        landmark: document.getElementById('landmark').value.trim(),   // Added
-                        city: document.getElementById('city').value.trim(),
-                        state: document.getElementById('state').value.trim(),
-                        pin: document.getElementById('pin').value.trim(),
-                        phone: document.getElementById('phone').value.trim()
-                    };
+    alert("Payment Successful!");
 
-                    await fetch('https://dakshas-artistry-backend-production.up.railway.app/api/orders', {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}` 
-                        },
-                        body: JSON.stringify({
-                            items: itemsToRender,
-                            total: orderTotal,
-                            paymentMethod: method === 'cod' ? 'Cash on Delivery' : 'Online Paid',
-                            shippingDetails: shippingDetails 
-                        })
-                    });
+    window.location.href = "dashboard.html";
+},
+    prefill: {
+        name: shippingDetails.firstName + " " + shippingDetails.lastName,
+        contact: shippingDetails.phone
+    },
 
-                    if (!isEnrollment) {
-                        await fetch('https://dakshas-artistry-backend-production.up.railway.app/api/cart', {
-                            method: 'DELETE',
-                            headers: { 'Authorization': `Bearer ${token}` }
-                        });
-                        localStorage.removeItem('da_cart'); 
-                    }
+    theme: {
+        color: "#4B302A"
+    }
+};
 
-                    document.getElementById('gw-processing').style.display = 'none';
-                    document.getElementById('gw-success').style.display = 'block';
+console.log("Order received:", order);
+console.log("Options:", options);
 
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 2500);
+try {
+    const rzp = new Razorpay(options);
+    console.log("Razorpay object created");
 
-                } catch(err) {
-                    console.error(err);
-                    alert("A network error occurred. Please check your dashboard to see if the order went through.");
-                    overlay.classList.remove('active');
-                }
-            }, 2500); 
+    rzp.open();
+
+    console.log("rzp.open() executed");
+} catch (err) {
+    console.error("Razorpay Error:", err);
+}
         });
     </script>
 </body>
