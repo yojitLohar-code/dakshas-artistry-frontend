@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/product/:id",
+      "destination": "/product?id=:id"
+    }
+  ]
+}
