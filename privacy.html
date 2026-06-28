@@ -4,50 +4,221 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy | Daksha's Artistry</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        :root { --cream: #F6F0E8; --mocha: #8B6B61; --cocoa: #4B302A; --font-heading: 'Playfair Display', serif; --font-body: 'Montserrat', sans-serif; }
-        body { font-family: var(--font-body); background: var(--cream); color: var(--cocoa); line-height: 1.8; padding: 50px 8%; max-width: 900px; margin: 0 auto; }
-        h1 { font-family: var(--font-heading); font-size: 3rem; margin-bottom: 20px; }
-        h2 { font-family: var(--font-heading); font-size: 1.8rem; margin-top: 40px; margin-bottom: 15px; color: var(--mocha); }
-        p, ul { margin-bottom: 20px; font-size: 0.95rem; }
-        li { margin-bottom: 10px; }
-        .back-link { display: inline-block; margin-bottom: 40px; color: var(--mocha); text-decoration: underline; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px;}
+        :root { 
+            --cream: #FDFBF7; 
+            --beige: #F6F0E8;
+            --mocha: #8B6B61; 
+            --mocha-light: #C4ABA4;
+            --cocoa: #4B302A; 
+            --font-heading: 'Playfair Display', serif; 
+            --font-body: 'Montserrat', sans-serif; 
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body { 
+            font-family: var(--font-body); 
+            background: linear-gradient(135deg, var(--cream) 0%, var(--beige) 100%); 
+            color: var(--cocoa); 
+            line-height: 1.8; 
+            padding: 40px 5%;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px; 
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 60px 8%;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(75, 48, 42, 0.06);
+            border: 1px solid rgba(139, 107, 97, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--beige);
+            padding-bottom: 30px;
+        }
+
+        h1 { 
+            font-family: var(--font-heading); 
+            font-size: 2.8rem; 
+            color: var(--cocoa);
+            margin-bottom: 10px; 
+            letter-spacing: -0.5px;
+        }
+
+        .last-updated {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--mocha);
+        }
+
+        .intro-text {
+            font-size: 1.05rem;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #5A443F;
+        }
+
+        h2 { 
+            font-family: var(--font-heading); 
+            font-size: 1.6rem; 
+            margin-top: 0; 
+            margin-bottom: 15px; 
+            color: var(--mocha); 
+        }
+
+        .policy-section {
+            margin-bottom: 40px;
+            padding-left: 25px;
+            border-left: 3px solid var(--mocha-light);
+            transition: border-color 0.3s ease;
+        }
+
+        .policy-section:hover {
+            border-color: var(--mocha);
+        }
+
+        p, ul { 
+            font-size: 0.95rem; 
+            color: #5A443F;
+        }
+
+        ul {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+
+        li { 
+            margin-bottom: 12px; 
+        }
+        
+        li::marker {
+            color: var(--mocha);
+        }
+
+        strong {
+            color: var(--cocoa);
+            font-weight: 600;
+        }
+
+        .contact-box {
+            background: var(--beige);
+            padding: 35px;
+            border-radius: 8px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .contact-box h2 {
+            border: none;
+            padding: 0;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .contact-box p {
+            margin-bottom: 10px;
+        }
+
+        .contact-box a {
+            color: var(--mocha);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .contact-box a:hover {
+            color: var(--cocoa);
+        }
+
+        .back-link { 
+            display: inline-flex; 
+            align-items: center;
+            margin-bottom: 30px; 
+            color: var(--mocha); 
+            text-decoration: none; 
+            text-transform: uppercase; 
+            font-size: 0.8rem; 
+            letter-spacing: 2px;
+            font-weight: 500;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--cocoa);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 40px 6%; }
+            h1 { font-size: 2.2rem; }
+            .policy-section { padding-left: 15px; }
+        }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-link">← Back to Home</a>
     
-    <h1>Privacy Policy</h1>
-    <p>Last Updated: June 2026</p>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <div class="header">
+            <h1>Privacy Policy</h1>
+            <p class="last-updated">Last Updated: June 2026</p>
+        </div>
 
-    <p>At Daksha's Artistry, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or make a purchase.</p>
+        <p class="intro-text">At Daksha's Artistry, we take your privacy seriously. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or make a purchase.</p>
 
-    <h2>1. Information We Collect</h2>
-    <p>We collect personal information that you voluntarily provide to us when you register on the website, express an interest in obtaining information about us or our products and services, or when you contact us. This includes:</p>
-    <ul>
-        <li><strong>Personal Details:</strong> Name, email address, phone number, and shipping/billing address.</li>
-        <li><strong>Account Data:</strong> Encrypted passwords and One-Time Passwords (OTPs) used for account verification.</li>
-        <li><strong>Payment Data:</strong> We do <strong>not</strong> store your credit card or UPI details on our servers. All payment data is handled securely by our third-party payment gateway partners (e.g., Razorpay/Stripe) using 256-bit encryption.</li>
-    </ul>
+        <div class="policy-section">
+            <h2>1. Information We Collect</h2>
+            <p>We collect personal information that you voluntarily provide to us when you register on the website, express an interest in obtaining information about us or our products and services, or when you contact us. This includes:</p>
+            <ul>
+                <li><strong>Personal Details:</strong> Name, email address, phone number, and shipping/billing address.</li>
+                <li><strong>Account Data:</strong> Encrypted passwords used for account verification.</li>
+                <li><strong>Payment Data:</strong> We do <strong>not</strong> store your credit card or UPI details on our servers. All payment data is handled securely by our third-party payment gateway partners using 256-bit encryption.</li>
+            </ul>
+        </div>
 
-    <h2>2. How We Use Your Information</h2>
-    <p>We use the information we collect or receive to:</p>
-    <ul>
-        <li>Fulfill and manage your orders, payments, and digital access.</li>
-        <li>Send you order confirmations, shipping updates, and administrative information.</li>
-        <li>Protect our website against fraud and unauthorized transactions.</li>
-    </ul>
+        <div class="policy-section">
+            <h2>2. How We Use Your Information</h2>
+            <p>We use the information we collect or receive to:</p>
+            <ul>
+                <li>Fulfill and manage your orders, payments, and digital access.</li>
+                <li>Send you order confirmations, shipping updates, and administrative information.</li>
+                <li>Protect our website against fraud and unauthorized transactions.</li>
+            </ul>
+        </div>
 
-    <h2>3. Sharing Your Information</h2>
-    <p>We only share information with third parties that perform services for us or on our behalf, including payment processing, data analysis, email delivery, and hosting services. We do not sell, rent, or trade your personal information to third parties for their marketing purposes.</p>
+        <div class="policy-section">
+            <h2>3. Sharing Your Information</h2>
+            <p>We only share information with third parties that perform services for us or on our behalf, including payment processing, data analysis, email delivery, and hosting services. We do not sell, rent, or trade your personal information to third parties for their marketing purposes.</p>
+        </div>
 
-    <h2>4. Cookies and Tracking</h2>
-    <p>We may use cookies and similar tracking technologies to access or store information regarding your session (such as keeping items in your shopping cart or keeping you logged in).</p>
+        <div class="policy-section">
+            <h2>4. Cookies and Tracking</h2>
+            <p>We may use cookies and similar tracking technologies to access or store information regarding your session (such as keeping items in your shopping cart or keeping you logged in).</p>
+        </div>
 
-    <h2>5. Contact Us</h2>
-    <p>If you have questions or comments about this Privacy Policy, please contact us at:<br>
-    <strong>Email:</strong> hello@dakshasartistry.com<br>
-    <strong>Address:</strong> 123 Artistry Lane, Vaishali Nagar, Jaipur, Rajasthan 302021, India</p>
+        <div class="contact-box">
+            <h2>Contact Us</h2>
+            <p>If you have questions or comments about this Privacy Policy, please contact us at:</p>
+            <p><strong>Email:</strong> <a href="mailto:dakshas.artistry@gmail.com">dakshas.artistry@gmail.com</a></p>
+            <p><strong>Address:</strong><br>
+            2MMF+352, Nikol<br>
+            Ahmedabad, Gujarat 380049<br>
+            India</p>
+        </div>
+    </div>
+
 </body>
 </html>
