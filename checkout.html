@@ -310,7 +310,7 @@
                 </div>
                 <div class="total-row">
                     <span>Standard Shipping</span>
-                    <span id="shipping-charge" style="color: var(--cocoa); font-weight: 600;">₹120</span>
+                    <span id="shipping-charge" style="color: var(--cocoa); font-weight: 600;">₹0</span>
                 </div>
                 <div class="total-row grand-total">
                     <span>Total Due</span>
@@ -347,7 +347,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const isEnrollment = urlParams.get('enroll') === 'masterclass';
         let orderTotal = 0;
-        const SHIPPING_CHARGE = 120;
+        const SHIPPING_CHARGE = 0;
         let itemsToRender = []; 
 
         document.addEventListener('DOMContentLoaded', async () => {
