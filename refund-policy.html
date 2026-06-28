@@ -4,46 +4,204 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Refund & Cancellation Policy | Daksha's Artistry</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        :root { --cream: #F6F0E8; --mocha: #8B6B61; --cocoa: #4B302A; --font-heading: 'Playfair Display', serif; --font-body: 'Montserrat', sans-serif; }
-        body { font-family: var(--font-body); background: var(--cream); color: var(--cocoa); line-height: 1.8; padding: 50px 8%; max-width: 900px; margin: 0 auto; }
-        h1 { font-family: var(--font-heading); font-size: 3rem; margin-bottom: 20px; }
-        h2 { font-family: var(--font-heading); font-size: 1.8rem; margin-top: 40px; margin-bottom: 15px; color: var(--mocha); }
-        p, ul { margin-bottom: 20px; font-size: 0.95rem; }
-        li { margin-bottom: 10px; }
-        .back-link { display: inline-block; margin-bottom: 40px; color: var(--mocha); text-decoration: underline; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px;}
+        :root { 
+            --cream: #FDFBF7; 
+            --beige: #F6F0E8;
+            --mocha: #8B6B61; 
+            --mocha-light: #C4ABA4;
+            --cocoa: #4B302A; 
+            --font-heading: 'Playfair Display', serif; 
+            --font-body: 'Montserrat', sans-serif; 
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body { 
+            font-family: var(--font-body); 
+            background: linear-gradient(135deg, var(--cream) 0%, var(--beige) 100%); 
+            color: var(--cocoa); 
+            line-height: 1.8; 
+            padding: 40px 5%;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px; 
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 60px 8%;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(75, 48, 42, 0.06);
+            border: 1px solid rgba(139, 107, 97, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--beige);
+            padding-bottom: 30px;
+        }
+
+        h1 { 
+            font-family: var(--font-heading); 
+            font-size: 2.8rem; 
+            color: var(--cocoa);
+            margin-bottom: 10px; 
+            letter-spacing: -0.5px;
+        }
+
+        .last-updated {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--mocha);
+        }
+
+        h2 { 
+            font-family: var(--font-heading); 
+            font-size: 1.6rem; 
+            margin-top: 0; 
+            margin-bottom: 15px; 
+            color: var(--mocha); 
+        }
+
+        .policy-section {
+            margin-bottom: 40px;
+            padding-left: 25px;
+            border-left: 3px solid var(--mocha-light);
+            transition: border-color 0.3s ease;
+        }
+
+        .policy-section:hover {
+            border-color: var(--mocha);
+        }
+
+        p, ul { 
+            font-size: 0.95rem; 
+            color: #5A443F;
+        }
+
+        ul {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+
+        li { 
+            margin-bottom: 12px; 
+        }
+        
+        li::marker {
+            color: var(--mocha);
+        }
+
+        strong {
+            color: var(--cocoa);
+            font-weight: 600;
+        }
+
+        .contact-box {
+            background: var(--beige);
+            padding: 30px;
+            border-radius: 8px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .contact-box h2 {
+            border: none;
+            padding: 0;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .contact-box a {
+            color: var(--mocha);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .contact-box a:hover {
+            color: var(--cocoa);
+        }
+
+        .back-link { 
+            display: inline-flex; 
+            align-items: center;
+            margin-bottom: 30px; 
+            color: var(--mocha); 
+            text-decoration: none; 
+            text-transform: uppercase; 
+            font-size: 0.8rem; 
+            letter-spacing: 2px;
+            font-weight: 500;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--cocoa);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 40px 6%; }
+            h1 { font-size: 2.2rem; }
+            .policy-section { padding-left: 15px; }
+        }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-link">← Back to Home</a>
     
-    <h1>Refund & Cancellation Policy</h1>
-    <p>Last Updated: October 2026</p>
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Home</a>
+        
+        <div class="header">
+            <h1>Refund & Cancellation Policy</h1>
+            <p class="last-updated">Last Updated: June 2026</p>
+        </div>
 
-    <h2>1. Custom Press-On Nails</h2>
-    <p>Because all our press-on nails are handcrafted and custom-sized specifically to your measurements, <strong>we do not offer returns, exchanges, or refunds</strong> once production has begun. </p>
-    <ul>
-        <li><strong>Cancellations:</strong> You may cancel your custom nail order within <strong>24 hours</strong> of placement for a full refund. After 24 hours, the order is locked for production.</li>
-        <li><strong>Sizing Issues:</strong> We are not responsible for incorrect sizing if the measurements provided by the customer are inaccurate. Please use our sizing kits to ensure a perfect fit.</li>
-        <li><strong>Damaged in Transit:</strong> If your items arrive damaged, please contact us at hello@dakshasartistry.com within 48 hours of delivery with photographic proof, and we will arrange a replacement.</li>
-    </ul>
+        <div class="policy-section">
+            <h2>1. Custom Press-On Nails</h2>
+            <p>Because all our press-on nails are handcrafted and custom-sized specifically to your measurements, <strong>we do not offer returns, exchanges, or refunds once an order has been placed.</strong> All sales are final at the moment of checkout, and orders cannot be cancelled once submitted.</p>
+            <ul>
+                <li><strong>Sizing Issues:</strong> We are not responsible for incorrect sizing if the measurements provided by the customer are inaccurate. Please use our sizing kits to ensure a perfect fit before placing a custom order.</li>
+                <li><strong>Damaged in Transit:</strong> If your items arrive damaged, please contact us at <strong>dakshas.artistry@gmail.com</strong> within 48 hours of delivery with photographic proof, and we will promptly arrange a replacement.</li>
+            </ul>
+        </div>
 
-    <h2>2. The Foundation & Precision Masterclass (Digital Vault)</h2>
-    <p>Due to the immediate, downloadable nature of our digital courses and masterclass access, <strong>all sales for digital products are final and strictly non-refundable.</strong> By purchasing the course, you acknowledge that you waive your right to a refund once access is granted.</p>
+        <div class="policy-section">
+            <h2>2. The Foundation & Precision Masterclass (Digital Vault)</h2>
+            <p>Due to the immediate, downloadable nature of our digital courses and masterclass access, <strong>all sales for digital products are final and strictly non-refundable.</strong> By purchasing the course, you acknowledge that you waive your right to a refund once access is granted.</p>
+        </div>
 
-    <h2>3. Bridal & Studio Appointments</h2>
-    <ul>
-        <li>A non-refundable booking retainer is required to secure your date.</li>
-        <li>If you need to reschedule, please notify us at least 14 days in advance, and your retainer may be transferred to a new date (subject to availability).</li>
-        <li>Cancellations within 14 days of the appointment will forfeit the retainer entirely.</li>
-    </ul>
+        <div class="policy-section">
+            <h2>3. Bridal & Studio Appointments</h2>
+            <p>For all appointments booked at our <strong>Ahmedabad studio</strong> or on-location:</p>
+            <ul>
+                <li>A non-refundable booking retainer is required to secure your date and time.</li>
+                <li>If you need to reschedule, please notify us at least 14 days in advance, and your retainer may be transferred to a new date (strictly subject to availability).</li>
+                <li>Cancellations will forfeit the retainer entirely, regardless of the timeframe.</li>
+            </ul>
+        </div>
 
-    <h2>4. Refund Processing</h2>
-    <p>If an eligible refund is approved (e.g., cancellation within 24 hours), the amount will be credited back to your original method of payment within 5-7 business days, depending on your bank's processing times.</p>
+        <div class="policy-section">
+            <h2>4. Exceptional Refund Processing</h2>
+            <p>Since we operate on a strict no-cancellation policy, refunds are generally not processed. In the rare, exceptional case of an approved refund (e.g., severe transit damage where a replacement is unavailable), the amount will be credited back to your original method of payment within 5-7 business days, depending on your bank's processing times.</p>
+        </div>
 
-    <h2>Contact Us</h2>
-    <p>If you have any questions about this policy, please contact us at: <strong>hello@dakshasartistry.com</strong></p>
+        <div class="contact-box">
+            <h2>Contact Us</h2>
+            <p>Based in <strong>Ahmedabad, Gujarat</strong></p>
+            <p>If you have any questions regarding your order or this policy, please reach out at:<br>
+            <a href="mailto:dakshas.artistry@gmail.com"><strong>dakshas.artistry@gmail.com</strong></a></p>
+        </div>
+    </div>
 
 </body>
 </html>
