@@ -207,8 +207,17 @@ window.syncGlobalState = async function() {
                                 </div>
                             </div>
                         </div>`).join('');
-                    document.getElementById('cartSubtotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
-                    document.getElementById('cartTotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+                    const shipping = 120;
+const total = subtotal + shipping;
+
+document.getElementById('cartSubtotal').textContent =
+    `₹${subtotal.toLocaleString('en-IN')}`;
+
+document.getElementById('shippingCost').textContent =
+    `₹${shipping.toLocaleString('en-IN')}`;
+
+document.getElementById('cartTotal').textContent =
+    `₹${total.toLocaleString('en-IN')}`;
                 }
             }
         }
