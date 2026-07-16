@@ -1135,10 +1135,17 @@
                     img: item.img
                 }));
             } catch (err) {
-                console.error("Failed to load inventory");
-                document.getElementById('productGrid').innerHTML = '<h2 style="grid-column: 1/-1; text-align: center; color: var(--mocha);">Error loading products. Is backend running?</h2>';
-                return;
-            }
+    console.error("FULL ERROR:", err);
+
+    document.getElementById('productGrid').innerHTML = `
+        <div style="grid-column:1/-1;text-align:center;padding:40px;">
+            <h2>Error loading products</h2>
+            <p style="color:red;font-weight:bold;">${err.message}</p>
+        </div>
+    `;
+
+    return;
+}
 
             if (token) {
                 try {
